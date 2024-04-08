@@ -71,7 +71,7 @@ struct LaunchView: View {
         } catch {
             errorMessage = "\(error.localizedDescription)"
         }
-        withAnimation(.bouncy(duration: animationDuration).delay(3)) {
+        withAnimation(.bouncy(duration: animationDuration).delay(5)) {
             showingLoadingView = false
         }
     }

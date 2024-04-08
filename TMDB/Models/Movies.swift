@@ -17,16 +17,15 @@ struct Movies: Decodable, Equatable {
     
     // Factory method that fetches now playing movies
     static var nowPlaying: [Movie] { get async throws {
-        guard var url = URL(string: "now_playing", relativeTo: NetworkService.baseURL) else {
-            throw NetworkError.badURL(message: "Cannot fetch **Now Playing Movies**: Bad URL.")
-        }
         let params = [
             URLQueryItem(name: "language", value: "en-US"),
-            URLQueryItem(name: "page", value: "1"),
-            URLQueryItem(name: "api_key", value: NetworkService.apiKey)
+            URLQueryItem(name: "page", value: "1")
         ]
-        url.append(queryItems: params)
-        
+        let url = try NetworkService.buildURL(
+            for: "now_playing",
+            relativeTo: NetworkService.baseURL,
+            queryItems: params
+        )
         let movies: Self = try await NetworkService.shared.loadData(from: url)
         return movies.results
     }}
@@ -51,12 +50,10 @@ struct Movie: Decodable, Identifiable, Equatable {
     
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
-        guard var url = URL(string: "\(id)/similar", relativeTo: NetworkService.baseURL) else {
-            throw NetworkError.badURL(message: "Cannot fetch **Similar Movies**: Bad URL.")
-        }
-        let params = [URLQueryItem(name: "api_key", value: NetworkService.apiKey)]
-        url.append(queryItems: params)
-        
+        let url = try NetworkService.buildURL(
+            for: "\(id)/similar",
+            relativeTo: NetworkService.baseURL
+        )
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
         return movies
     }}
@@ -93,7 +90,7 @@ struct Movie: Decodable, Identifiable, Equatable {
         
         // Convert the poster path into Swift URL object pointing to the poster's image url
         let posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath) ?? ""
-        self.posterURL = URL(string: posterPath, relativeTo: NetworkService.posterBaseURL)
+        self.posterURL = URL(string: posterPath, relativeTo: NetworkService.imageBaseURL)
     }
     
     // posterBaseURL is used to convert poster path to an url pointing towards the image.
