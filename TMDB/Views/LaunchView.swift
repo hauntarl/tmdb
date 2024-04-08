@@ -25,6 +25,7 @@ struct LaunchView: View {
         in: .common
     ).autoconnect()
     
+    @Environment(\.animationDuration) var animationDuration
     @State private var gradientColors: [Color] = []
     @State private var showingLoadingView = true
     
@@ -61,7 +62,7 @@ struct LaunchView: View {
             
             // TODO: Replace this code with fetch movies request
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                withAnimation(.bouncy(duration: 0.5)) {
+                withAnimation(.bouncy(duration: animationDuration)) {
                     showingLoadingView = false
                 }
                 cancelTimer()
@@ -100,5 +101,6 @@ struct LaunchView: View {
 
 #Preview {
     LaunchView()
+        .animationDuration(0.5)
         .preferredColorScheme(.dark)
 }
