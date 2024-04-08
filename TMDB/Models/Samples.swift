@@ -1,5 +1,5 @@
 //
-//  Movie.swift
+//  Samples.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/8/24.
@@ -7,94 +7,14 @@
 
 import Foundation
 
-/**
-  `Movie` model is used to display result of querying Movies from [themoviedb.org](https://developer.themoviedb.org/reference/movie-now-playing-list)
- */
-struct Movie: Decodable, Identifiable, Equatable {
-    let id: Int
-    let title: String
-    let overview: String
-    let popularity: Double
-    let posterURL: URL?
-    let releaseDate: Date?
-    let rating: Double
-    
-    enum CodingKeys: CodingKey {
-        case id
-        case original_title
-        case overview
-        case popularity
-        case poster_path
-        case release_date
-        case vote_average
-    }
-    
+extension Movies {
     /**
-     A custom decoder that efficiently maps json response to respective Swift objects.
-     This is done to avoid creation of intermediate data models.
-     */
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(Int.self, forKey: .id)
-        self.title = try container.decode(String.self, forKey: .original_title)
-        self.overview = try container.decode(String.self, forKey: .overview)
-        self.popularity = try container.decode(Double.self, forKey: .popularity)
-        self.rating = try container.decode(Double.self, forKey: .vote_average)
-        
-        // Convert the release date string into Swift Date object
-        let releaseDate = try container.decodeIfPresent(String.self, forKey: .release_date) ?? ""
-        self.releaseDate = Self.dateFormatter.date(from: releaseDate)
-        
-        // Convert the poster path into Swift URL object pointing to the poster's image url
-        let posterPath = try container.decodeIfPresent(String.self, forKey: .poster_path) ?? ""
-        if let posterURL = URL(string: Self.posterBaseURL + posterPath) {
-            self.posterURL = posterURL
-        } else {
-            self.posterURL = nil
-        }
-    }
-    
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-    private static let posterBaseURL: String = "https://image.tmdb.org/t/p/w500"
-    
-    /**
-     Sample `Movie` used for previews and testing
+     Sample `Movies` used for previews and testing
      */
     static let sample: Self = {
         try! JSONDecoder().decode(Self.self, from: sampleJSON)
     }()
-    static let sampleJSON = """
-    {
-         "id": 823464,
-         "original_title": "Godzilla x Kong: The New Empire",
-         "overview": "Following their explosive showdown, Godzilla and Kong must reunite against a colossal undiscovered threat hidden within our world, challenging their very existence – and our own.",
-         "popularity": 3537.982,
-         "poster_path": "/1hUTqPnfTvuupk7XW7WCkWYW4M1.jpg",
-         "release_date": "2024-03-27",
-         "title": "Godzilla x Kong: The New Empire",
-         "vote_average": 6.7,
-    }
-    """.data(using: .utf8)!
-}
-
-/**
- `MovieResponse` is a wrapper model required to correctly represent the structure of json
- response from the [themoviedb.org](https://developer.themoviedb.org/reference/movie-now-playing-list)
- api to fetch the list of all the movies.
- */
-struct MovieResponse: Decodable, Equatable {
-    let results: [Movie]
     
-    /**
-     Sample `MovieResponse` used for previews and testing
-     */
-    static let sample: Self = {
-        try! JSONDecoder().decode(Self.self, from: sampleJSON)
-    }()
     static let sampleJSON = """
     {
          "results": [
@@ -199,6 +119,28 @@ struct MovieResponse: Decodable, Equatable {
                  "vote_count": 2480
              }
          ]
+    }
+    """.data(using: .utf8)!
+}
+
+extension Movie {
+    /**
+     Sample `Movie` used for previews and testing
+     */
+    static let sample: Self = {
+        try! JSONDecoder().decode(Self.self, from: sampleJSON)
+    }()
+    
+    static let sampleJSON = """
+    {
+         "id": 823464,
+         "original_title": "Godzilla x Kong: The New Empire",
+         "overview": "Following their explosive showdown, Godzilla and Kong must reunite against a colossal undiscovered threat hidden within our world, challenging their very existence – and our own.",
+         "popularity": 3537.982,
+         "poster_path": "/1hUTqPnfTvuupk7XW7WCkWYW4M1.jpg",
+         "release_date": "2024-03-27",
+         "title": "Godzilla x Kong: The New Empire",
+         "vote_average": 6.7,
     }
     """.data(using: .utf8)!
 }

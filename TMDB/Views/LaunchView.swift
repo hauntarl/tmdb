@@ -34,7 +34,7 @@ struct LaunchView: View {
             loadingView
                 .transition(.move(edge: .leading))
         } else {
-            MoviesView(movies: MovieResponse.sample.results)
+            MoviesView(movies: Movies.sample.results)
                 .transition(.move(edge: .trailing))
         }
     }

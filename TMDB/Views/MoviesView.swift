@@ -12,12 +12,25 @@ struct MoviesView: View {
     
     var body: some View {
         List(movies) { movie in
-            Text(movie.title)
+            
+            HStack {
+                AsyncImage(url: movie.posterURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipShape(.circle)
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 30, height: 30)
+                
+                Text(movie.title)
+            }
         }
     }
 }
 
 #Preview {
-    MoviesView(movies: MovieResponse.sample.results)
+    MoviesView(movies: Movies.sample.results)
         .preferredColorScheme(.dark)
 }
