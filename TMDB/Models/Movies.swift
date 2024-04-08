@@ -18,7 +18,7 @@ struct Movies: Decodable, Equatable {
     // Factory method that fetches now playing movies
     static var nowPlaying: [Movie] { get async throws {
         guard var url = URL(string: "now_playing", relativeTo: NetworkService.baseURL) else {
-            throw NetworkError.badURL(message: "Cannot fetch **Now Playing Movies**: Bad URL")
+            throw NetworkError.badURL(message: "Cannot fetch **Now Playing Movies**: Bad URL.")
         }
         let params = [
             URLQueryItem(name: "language", value: "en-US"),
@@ -28,7 +28,7 @@ struct Movies: Decodable, Equatable {
         url.append(queryItems: params)
         
         let movies: Self = try await NetworkService.shared.loadData(from: url)
-        return movies.results.filter { $0.posterURL != nil }
+        return movies.results
     }}
 }
 
@@ -52,13 +52,13 @@ struct Movie: Decodable, Identifiable, Equatable {
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
         guard var url = URL(string: "\(id)/similar", relativeTo: NetworkService.baseURL) else {
-            throw NetworkError.badURL(message: "Cannot fetch **Similar Movies** at the time :(")
+            throw NetworkError.badURL(message: "Cannot fetch **Similar Movies**: Bad URL.")
         }
         let params = [URLQueryItem(name: "api_key", value: NetworkService.apiKey)]
         url.append(queryItems: params)
         
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
-        return movies.filter { $0.posterURL != nil }
+        return movies
     }}
     
     enum CodingKeys: String, CodingKey {

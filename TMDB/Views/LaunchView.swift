@@ -68,8 +68,6 @@ struct LaunchView: View {
         do {
             movies = try await Movies.nowPlaying
             errorMessage = nil
-        } catch NetworkError.badURL(let reason) {
-            errorMessage = reason
         } catch {
             errorMessage = "\(error.localizedDescription)"
         }
