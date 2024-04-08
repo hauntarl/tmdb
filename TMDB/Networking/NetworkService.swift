@@ -8,9 +8,11 @@
 import Foundation
 
 /**A generic network manager that loads data from a given api endpoint.*/
-struct NetworkManager {
+struct NetworkService {
     static let shared = Self()
-
+    static let posterBaseURL = URL(string: "https://image.tmdb.org/t/p/w500/")
+    static let baseURL = URL(string: "https://api.themoviedb.org/3/movie/")
+    
     private let networking: Networking
     
     /**

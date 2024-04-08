@@ -6,7 +6,7 @@
 //
 //  Protocol based mocking: https://www.swiftbysundell.com/articles/dependency-injection-and-unit-testing-using-async-await/#:~:text=Protocol%2Dbased%20mocking
 
-import Foundation
+import SwiftUI
 
 /**
  A protocol-based Networking abstraction, which essentially just requires us to duplicate the signature of the
@@ -33,5 +33,5 @@ extension URLSession: Networking {}
  NetworkError enum used for throwing specific network errors.
  */
 enum NetworkError: Error {
-    case invalidURL
+    case badURL(message: LocalizedStringKey)
 }

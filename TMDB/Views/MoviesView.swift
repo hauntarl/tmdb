@@ -9,21 +9,15 @@ import SwiftUI
 
 struct MoviesView: View {
     let movies: [Movie]
+    let errorMessage: LocalizedStringKey?
     
     var body: some View {
-        List(movies) { movie in
+        List {
+            if let errorMessage {
+                Text(errorMessage)
+            }
             
-            HStack {
-                AsyncImage(url: movie.posterURL) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipShape(.circle)
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 30, height: 30)
-                
+            ForEach(movies) { movie in
                 Text(movie.title)
             }
         }
@@ -31,6 +25,6 @@ struct MoviesView: View {
 }
 
 #Preview {
-    MoviesView(movies: Movies.sample.results)
+    MoviesView(movies: Movies.sample.results, errorMessage: nil)
         .preferredColorScheme(.dark)
 }

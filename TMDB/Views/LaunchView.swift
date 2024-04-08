@@ -28,13 +28,15 @@ struct LaunchView: View {
     @Environment(\.animationDuration) var animationDuration
     @State private var gradientColors: [Color] = []
     @State private var showingLoadingView = true
+    @State private var movies = [Movie]()
+    @State private var errorMessage: LocalizedStringKey?
     
     var body: some View {
         if showingLoadingView {
             loadingView
                 .transition(.move(edge: .leading))
         } else {
-            MoviesView(movies: Movies.sample.results)
+            MoviesView(movies: movies, errorMessage: errorMessage)
                 .transition(.move(edge: .trailing))
         }
     }
@@ -56,16 +58,23 @@ struct LaunchView: View {
         .onReceive(timer) { _ in
             gradientTransition()
         }
-        .onAppear {
-            gradientTransition()
-            
-            // TODO: Replace this code with fetch movies request
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                withAnimation(.bouncy(duration: animationDuration)) {
-                    showingLoadingView = false
-                }
-                cancelTimer()
-            }
+        .onAppear(perform: gradientTransition)
+        .task {
+            await fetchMovies()
+        }
+    }
+    
+    private func fetchMovies() async {
+        do {
+            movies = try await Movies.nowPlaying
+            errorMessage = nil
+        } catch NetworkError.badURL(let reason) {
+            errorMessage = reason
+        } catch {
+            errorMessage = "\(error.localizedDescription)"
+        }
+        withAnimation(.bouncy(duration: animationDuration).delay(3)) {
+            showingLoadingView = false
         }
     }
     

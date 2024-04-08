@@ -8,15 +8,34 @@
 import Foundation
 
 /**
- `Movies` represents an aggregate model that responsible for providing movie results to the view
- from the [themoviedb.org](https://developer.themoviedb.org/reference/movie-now-playing-list) api.
+ `Movies` represents an aggregate model that is responsible for providing movie results
+ like **now playing, popular, top-rated, and upcoming** from the
+ [themoviedb.org](https://developer.themoviedb.org/reference/intro/getting-started) api.
  */
 struct Movies: Decodable, Equatable {
     let results: [Movie]
+    
+    // Factory method that fetches now playing movies
+    static var nowPlaying: [Movie] { get async throws {
+        guard var url = URL(string: "now_playing", relativeTo: NetworkService.baseURL) else {
+            throw NetworkError.badURL(message: "Cannot fetch **Now Playing Movies**: Bad URL")
+        }
+        let params = [
+            URLQueryItem(name: "language", value: "en-US"),
+            URLQueryItem(name: "page", value: "1"),
+            URLQueryItem(name: "api_key", value: "api_key")
+        ]
+        url.append(queryItems: params)
+        
+        let movies: Self = try await NetworkService.shared.loadData(from: url)
+        return movies.results.filter { $0.posterURL != nil }
+    }}
 }
 
 /**
- `Movie` represents the internal structure of a `Movies` API response that is consumed by the view.
+ `Movie` represents the internal structure of a `Movies` aggregate model that is consumed by the view.
+ It also provides a method to fetch movies similar to the current movie as it directly depends
+ on the `id` attribute of a movie.
  
  It utilizes a custom decoding strategy in order to transform api response into fields
  that can be directly consumed by the views.
@@ -27,8 +46,20 @@ struct Movie: Decodable, Identifiable, Equatable {
     let overview: String
     let popularity: Double
     let posterURL: URL?
-    let releaseDate: Date?
+    let releaseYear: Int?
     let rating: Double
+    
+    // Method fetches similar movies from the current movie id
+    var similar: [Self] { get async throws {
+        guard var url = URL(string: "\(id)/similar", relativeTo: NetworkService.baseURL) else {
+            throw NetworkError.badURL(message: "Cannot fetch **Similar Movies** at the time :(")
+        }
+        let params = [URLQueryItem(name: "api_key", value: "api_key")]
+        url.append(queryItems: params)
+        
+        let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
+        return movies.filter { $0.posterURL != nil }
+    }}
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -42,7 +73,7 @@ struct Movie: Decodable, Identifiable, Equatable {
     
     /**
      A custom decoder that efficiently maps json response to respective Swift objects.
-     This is done to avoid creation of intermediate data models.
+     This is done to reduce data transformation operations at the aggregate model level.
      */
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -52,23 +83,23 @@ struct Movie: Decodable, Identifiable, Equatable {
         self.popularity = try container.decode(Double.self, forKey: .popularity)
         self.rating = try container.decode(Double.self, forKey: .rating)
         
-        // Convert the release date string into Swift Date object
-        let releaseDate = try container.decodeIfPresent(String.self, forKey: .releaseDate) ?? ""
-        self.releaseDate = Self.dateFormatter.date(from: releaseDate)
+        // Extract year component from the release date received from the api response
+        let releaseDateString = try container.decodeIfPresent(String.self, forKey: .releaseDate) ?? ""
+        if let releaseDate = Self.dateFormatter.date(from: releaseDateString) {
+            self.releaseYear = Calendar.current.dateComponents([.year], from: releaseDate).year
+        } else {
+            self.releaseYear = nil
+        }
         
         // Convert the poster path into Swift URL object pointing to the poster's image url
         let posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath) ?? ""
-        if let posterURL = URL(string: Self.posterBaseURL + posterPath) {
-            self.posterURL = posterURL
-        } else {
-            self.posterURL = nil
-        }
+        self.posterURL = URL(string: posterPath, relativeTo: NetworkService.posterBaseURL)
     }
     
+    // posterBaseURL is used to convert poster path to an url pointing towards the image.
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
-    private static let posterBaseURL: String = "https://image.tmdb.org/t/p/w500"
 }
