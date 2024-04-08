@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct MoviesView: View {
+    let movies: [Movie]
+    
     var body: some View {
-        Text("Hello, World!")
+        List(movies) { movie in
+            Text(movie.title)
+        }
     }
 }
 
 #Preview {
-    MoviesView()
+    MoviesView(movies: MovieResponse.sample.results)
         .preferredColorScheme(.dark)
 }
