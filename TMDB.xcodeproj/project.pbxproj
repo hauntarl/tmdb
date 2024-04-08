@@ -10,6 +10,7 @@
 		FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */; };
 		FC92EB722BC436C100B90E16 /* MoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB712BC436C100B90E16 /* MoviesView.swift */; };
 		FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */; };
+		FC92EB762BC43F1500B90E16 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC92EB752BC43F1500B90E16 /* Launch Screen.storyboard */; };
 		FC9B97122BC423B80082E972 /* TMDBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9B97112BC423B80082E972 /* TMDBApp.swift */; };
 		FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97152BC423BA0082E972 /* Assets.xcassets */; };
 		FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */; };
@@ -19,6 +20,7 @@
 		FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		FC92EB712BC436C100B90E16 /* MoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesView.swift; sourceTree = "<group>"; };
 		FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDurationKey.swift; sourceTree = "<group>"; };
+		FC92EB752BC43F1500B90E16 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FC9B970E2BC423B80082E972 /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9B97112BC423B80082E972 /* TMDBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBApp.swift; sourceTree = "<group>"; };
 		FC9B97152BC423BA0082E972 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				FC92EB6D2BC4264D00B90E16 /* Views */,
 				FC92EB702BC4267F00B90E16 /* Components */,
 				FC9B97112BC423B80082E972 /* TMDBApp.swift */,
+				FC92EB752BC43F1500B90E16 /* Launch Screen.storyboard */,
 				FC9B97152BC423BA0082E972 /* Assets.xcassets */,
 				FC9B97172BC423BA0082E972 /* Preview Content */,
 			);
@@ -147,6 +150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC92EB762BC43F1500B90E16 /* Launch Screen.storyboard in Resources */,
 				FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */,
 				FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */,
 			);
@@ -304,6 +308,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -338,6 +343,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;

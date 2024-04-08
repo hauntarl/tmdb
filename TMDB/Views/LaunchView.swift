@@ -46,14 +46,13 @@ struct LaunchView: View {
                 startPoint: .leading,
                 endPoint: .trailing
             )
-            .ignoresSafeArea()
             
             Rectangle()
                 .foregroundStyle(.regularMaterial)
-                .ignoresSafeArea()
             
             Image("Logo")
         }
+        .ignoresSafeArea()
         .onReceive(timer) { _ in
             gradientTransition()
         }
