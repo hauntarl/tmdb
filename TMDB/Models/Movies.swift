@@ -23,7 +23,7 @@ struct Movies: Decodable, Equatable {
         let params = [
             URLQueryItem(name: "language", value: "en-US"),
             URLQueryItem(name: "page", value: "1"),
-            URLQueryItem(name: "api_key", value: "api_key")
+            URLQueryItem(name: "api_key", value: NetworkService.apiKey)
         ]
         url.append(queryItems: params)
         
@@ -54,7 +54,7 @@ struct Movie: Decodable, Identifiable, Equatable {
         guard var url = URL(string: "\(id)/similar", relativeTo: NetworkService.baseURL) else {
             throw NetworkError.badURL(message: "Cannot fetch **Similar Movies** at the time :(")
         }
-        let params = [URLQueryItem(name: "api_key", value: "api_key")]
+        let params = [URLQueryItem(name: "api_key", value: NetworkService.apiKey)]
         url.append(queryItems: params)
         
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)

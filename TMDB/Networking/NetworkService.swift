@@ -10,8 +10,14 @@ import Foundation
 /**A generic network manager that loads data from a given api endpoint.*/
 struct NetworkService {
     static let shared = Self()
+    
     static let posterBaseURL = URL(string: "https://image.tmdb.org/t/p/w500/")
     static let baseURL = URL(string: "https://api.themoviedb.org/3/movie/")
+    static let apiKey: String = {
+        let url = Bundle.main.url(forResource: "Secrets", withExtension: "yml")!
+        let contents = try! String(contentsOf: url)
+        return contents.split(separator: ":").last!.trimmingCharacters(in: .whitespacesAndNewlines)
+    }()
     
     private let networking: Networking
     

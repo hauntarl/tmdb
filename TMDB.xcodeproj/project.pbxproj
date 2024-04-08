@@ -15,6 +15,7 @@
 		FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB7D2BC456B800B90E16 /* Networking.swift */; };
 		FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB7F2BC462CB00B90E16 /* NetworkService.swift */; };
 		FC92EB822BC469C700B90E16 /* Samples.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB812BC469C700B90E16 /* Samples.swift */; };
+		FC92EB862BC4938E00B90E16 /* Secrets.yml in Resources */ = {isa = PBXBuildFile; fileRef = FC92EB852BC4938E00B90E16 /* Secrets.yml */; };
 		FC9B97122BC423B80082E972 /* TMDBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9B97112BC423B80082E972 /* TMDBApp.swift */; };
 		FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97152BC423BA0082E972 /* Assets.xcassets */; };
 		FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		FC92EB7D2BC456B800B90E16 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		FC92EB7F2BC462CB00B90E16 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		FC92EB812BC469C700B90E16 /* Samples.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Samples.swift; sourceTree = "<group>"; };
+		FC92EB852BC4938E00B90E16 /* Secrets.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = Secrets.yml; sourceTree = "<group>"; };
 		FC9B970E2BC423B80082E972 /* TMDB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC9B97112BC423B80082E972 /* TMDBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBApp.swift; sourceTree = "<group>"; };
 		FC9B97152BC423BA0082E972 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				FC92EB752BC43F1500B90E16 /* Launch Screen.storyboard */,
 				FC9B97152BC423BA0082E972 /* Assets.xcassets */,
 				FC9B97172BC423BA0082E972 /* Preview Content */,
+				FC92EB852BC4938E00B90E16 /* Secrets.yml */,
 			);
 			path = TMDB;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC92EB862BC4938E00B90E16 /* Secrets.yml in Resources */,
 				FC92EB762BC43F1500B90E16 /* Launch Screen.storyboard in Resources */,
 				FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */,
 				FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */,
