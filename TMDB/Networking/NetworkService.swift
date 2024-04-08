@@ -10,7 +10,7 @@ import Foundation
 /**A generic network manager that loads data from a given api endpoint.*/
 struct NetworkService {
     static let shared = Self()
-    static let baseURL = URL(string: "https://api.themoviedb.org/3/movie/")
+    static let baseURL = URL(string: "https://api.themoviedb.org/3/")
     static let imageBaseURL = URL(string: "https://image.tmdb.org/t/p/original/")
     
     static func buildURL(

@@ -22,13 +22,31 @@ struct Movies: Decodable, Equatable {
             URLQueryItem(name: "page", value: "1")
         ]
         let url = try NetworkService.buildURL(
-            for: "now_playing",
+            for: "movie/now_playing",
             relativeTo: NetworkService.baseURL,
             queryItems: params
         )
         let movies: Self = try await NetworkService.shared.loadData(from: url)
         return movies.results
     }}
+    
+    // Factory method that fetches movies based on search query
+    static func search(query: String) async throws -> [Movie] {
+        let params = [
+            URLQueryItem(name: "query", value: query),
+            URLQueryItem(name: "include_adult", value: "true"),
+            URLQueryItem(name: "language", value: "en-US"),
+            URLQueryItem(name: "page", value: "1")
+        ]
+        let url = try NetworkService.buildURL(
+            for: "search/movie",
+            relativeTo: NetworkService.baseURL,
+            queryItems: params
+        )
+        print(url.absoluteString)
+        let movies: Self = try await NetworkService.shared.loadData(from: url)
+        return movies.results
+    }
 }
 
 /**
@@ -51,7 +69,7 @@ struct Movie: Decodable, Identifiable, Equatable {
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
         let url = try NetworkService.buildURL(
-            for: "\(id)/similar",
+            for: "movie/\(id)/similar",
             relativeTo: NetworkService.baseURL
         )
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
