@@ -34,4 +34,5 @@ extension URLSession: Networking {}
  */
 enum NetworkError: Error {
     case badURL(message: LocalizedStringKey)
+    case badImage(message: LocalizedStringKey)
 }

@@ -13,7 +13,20 @@ struct MoviesView: View {
     var body: some View {
         List {
             ForEach(movies) { movie in
-                Text(movie.title)
+                HStack {
+                    NetworkImage(url: movie.posterURL) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    } placeholder: {
+                        Rectangle()
+                            .foregroundStyle(.regularMaterial)
+                    }
+                    .clipShape(.circle)
+                    .frame(width: 40, height: 40)
+
+                    Text(movie.title)
+                }
             }
         }
     }

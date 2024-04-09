@@ -5,7 +5,7 @@
 //  Created by Sameer Mungole on 4/8/24.
 //
 
-import Foundation
+import SwiftUI
 
 /**
  `Movies` represents an aggregate model that is responsible for providing movie results
@@ -22,11 +22,12 @@ struct Movies: Decodable, Equatable {
             URLQueryItem(name: "page", value: "1")
         ]
         let url = try NetworkService.buildURL(
-            for: "movie/now_playing",
+            for: "/movie/now_playing",
             relativeTo: NetworkService.baseURL,
             queryItems: params
         )
         let movies: Self = try await NetworkService.shared.loadData(from: url)
+        await ImageCache.shared.fetchImages(from: movies.results.map({ $0.posterURL }))
         return movies.results
     }}
     
@@ -39,12 +40,13 @@ struct Movies: Decodable, Equatable {
             URLQueryItem(name: "page", value: "1")
         ]
         let url = try NetworkService.buildURL(
-            for: "search/movie",
+            for: "/search/movie",
             relativeTo: NetworkService.baseURL,
             queryItems: params
         )
         print(url.absoluteString)
         let movies: Self = try await NetworkService.shared.loadData(from: url)
+        await ImageCache.shared.fetchImages(from: movies.results.map({ $0.posterURL }))
         return movies.results
     }
 }
@@ -69,10 +71,11 @@ struct Movie: Decodable, Identifiable, Equatable {
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
         let url = try NetworkService.buildURL(
-            for: "movie/\(id)/similar",
+            for: "/movie/\(id)/similar",
             relativeTo: NetworkService.baseURL
         )
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
+        await ImageCache.shared.fetchImages(from: movies.map({ $0.posterURL }))
         return movies
     }}
     
@@ -108,7 +111,7 @@ struct Movie: Decodable, Identifiable, Equatable {
         
         // Convert the poster path into Swift URL object pointing to the poster's image url
         let posterPath = try container.decodeIfPresent(String.self, forKey: .posterPath) ?? ""
-        self.posterURL = URL(string: posterPath, relativeTo: NetworkService.imageBaseURL)
+        self.posterURL = try NetworkService.buildURL(for: posterPath, relativeTo: NetworkService.imageBaseURL)
     }
     
     // posterBaseURL is used to convert poster path to an url pointing towards the image.

@@ -10,17 +10,15 @@ import Foundation
 /**A generic network manager that loads data from a given api endpoint.*/
 struct NetworkService {
     static let shared = Self()
-    static let baseURL = URL(string: "https://api.themoviedb.org/3/")
-    static let imageBaseURL = URL(string: "https://image.tmdb.org/t/p/original/")
+    static let baseURL = URL(string: "https://api.themoviedb.org/3")!
+    static let imageBaseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
     
     static func buildURL(
         for path: String,
-        relativeTo baseURL: URL?,
+        relativeTo baseURL: URL,
         queryItems: [URLQueryItem] = []
     ) throws -> URL {
-        guard var url = URL(string: path, relativeTo: baseURL) else {
-            throw NetworkError.badURL(message: "Malformed URL for path: **\(path)**")
-        }
+        var url = baseURL.appendingPathComponent(path, conformingTo: .url)
         url.append(queryItems: queryItems)
         url.append(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
         return url

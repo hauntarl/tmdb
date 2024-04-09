@@ -14,9 +14,8 @@ import SwiftUI
  cache network images for fast retrieval of images through app.
  */
 struct NetworkImage<I: View, P: View>: View {
-    private let imageCache = ImageCache.shared
-    
     let url: URL?
+    var imageCache = ImageCache.shared
     @ViewBuilder let content: (Image) -> I
     @ViewBuilder let placeholder: () -> P
     
@@ -41,15 +40,10 @@ struct NetworkImage<I: View, P: View>: View {
     }
     
     private func fetchImage() async {
-        guard
-            let url,
-            let (data, _) = try? await URLSession.shared.data(from: url),
-            let uiImage = UIImage(data: data)
-        else {
+        guard let uiImage = await imageCache.fetchImage(from: url) else {
             return
         }
         
-        imageCache.setImage(uiImage, for: url.absoluteString)
         withAnimation(.easeOut(duration: animationDuration)) {
             image = Image(uiImage: uiImage)
         }
@@ -79,12 +73,56 @@ class ImageCache {
     func image(for key: String) -> UIImage? {
         cache.object(forKey: key as NSString)
     }
+    
+    /**
+     Helper method that asynchronously fetches one image and caches it
+     */
+    func fetchImage(from url: URL?) async -> UIImage? {
+        // If url is nil, return
+        guard let url else {
+            return nil
+        }
+        // If image already in cache, return
+        if let uiImage = image(for: url.absoluteString) {
+            return uiImage
+        }
+        
+        guard
+            let (data, _) = try? await URLSession.shared.data(from: url),
+            let uiImage = UIImage(data: data)
+        else {
+            return nil
+        }
+        setImage(uiImage, for: url.absoluteString)
+        return uiImage
+    }
+    
+    /**
+     Helper method that caches images from url in bulk
+     */
+    func fetchImages(from urls: [URL?]) async {
+        let _ = await withTaskGroup(of: [UIImage].self) { group -> [UIImage] in
+            for url in urls {
+                group.addTask { [unowned self] in
+                    guard let uiImage = await self.fetchImage(from: url) else {
+                        return []
+                    }
+                    return [uiImage]
+                }
+            }
+            
+            var collected = [UIImage]()
+            for await images in group {
+                collected.append(contentsOf: images)
+            }
+            return collected
+        }
+    }
 }
 
 #Preview {
-    NetworkImage(
-        url: URL(string: "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg")
-    ) { image in
+    let url =  URL(string: "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg")!
+    return NetworkImage(url: url) { image in
         image
             .resizable()
             .scaledToFit()
