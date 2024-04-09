@@ -12,6 +12,12 @@ import SwiftUI
 /**
  An alternative to `AsyncImage` view. This view utilizes a custom `ImageCache` object to 
  cache network images for fast retrieval of images through app.
+ 
+ - Parameters:
+    - url: Location of the image over the internet
+    - imageCache: The `ImageCache` object that should be used to store/retrieve cached images
+    - content: View to display once the image from `url` is available to use
+    - placeholder: View to display while the image is getting loaded from the `url`
  */
 struct NetworkImage<I: View, P: View>: View {
     let url: URL?
@@ -24,17 +30,19 @@ struct NetworkImage<I: View, P: View>: View {
     
     var body: some View {
         if let url, let uiImage = imageCache.image(for: url.absoluteString) {
-            // Directly display the image from cache
+            // Directly display the image from cache, reduces fractional overhead
+            // of async functions, as they get executed by SwiftUI after all synchronous
+            // tasks are completed.
             content(Image(uiImage: uiImage))
-                .transition(.opacity)
+                .transition(.blurReplace)
         } else if let image {
             // Display image once it's available
             content(image)
-                .transition(.opacity)
+                .transition(.blurReplace)
         } else {
             // Display placeholder and fetch image from the network
             placeholder()
-                .transition(.opacity)
+                .transition(.blurReplace)
                 .task { await fetchImage() }
         }
     }
@@ -50,76 +58,6 @@ struct NetworkImage<I: View, P: View>: View {
     }
 }
 
-/**
- `ImageCache` implements an in-memory image caching strategy using `NSCache`.
- 
- `NSCache` primarily stores data in memory, meaning the data in NSCache is not saved to
- disk. If your app terminates, the cache is cleared.
- */
-class ImageCache {
-    private var cache: NSCache<NSString, UIImage> = NSCache()
-    
-    static let shared = ImageCache()
-    
-    private init() {
-        cache.countLimit = 200  // Maximum number of objects
-        cache.totalCostLimit = 100 * 1024 * 1024  // 100 MB
-    }
-    
-    func setImage(_ image: UIImage, for key: String) {
-        cache.setObject(image, forKey: key as NSString)
-    }
-    
-    func image(for key: String) -> UIImage? {
-        cache.object(forKey: key as NSString)
-    }
-    
-    /**
-     Helper method that asynchronously fetches one image and caches it
-     */
-    func loadImage(from url: URL?) async -> UIImage? {
-        // If url is nil, return
-        guard let url else {
-            return nil
-        }
-        // If image already in cache, return
-        if let uiImage = image(for: url.absoluteString) {
-            return uiImage
-        }
-        
-        guard
-            let (data, _) = try? await URLSession.shared.data(from: url),
-            let uiImage = UIImage(data: data)
-        else {
-            return nil
-        }
-        setImage(uiImage, for: url.absoluteString)
-        return uiImage
-    }
-    
-    /**
-     Helper method that caches images from url in bulk
-     */
-    func loadImages(from urls: [URL?]) async {
-        let _ = await withTaskGroup(of: [UIImage].self) { group -> [UIImage] in
-            for url in urls {
-                group.addTask { [unowned self] in
-                    guard let uiImage = await self.loadImage(from: url) else {
-                        return []
-                    }
-                    return [uiImage]
-                }
-            }
-            
-            var collected = [UIImage]()
-            for await images in group {
-                collected.append(contentsOf: images)
-            }
-            return collected
-        }
-    }
-}
-
 #Preview {
     let url =  URL(string: "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg")!
     return NetworkImage(url: url) { image in
@@ -130,5 +68,5 @@ class ImageCache {
         ProgressView()
     }
     .preferredColorScheme(.dark)
-    .animationDuration(0.5)
+    .animationDuration(1)
 }

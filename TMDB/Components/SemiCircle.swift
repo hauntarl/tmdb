@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/**
+ Animatable semi-circle shape that is used as clip shape for `BottomModalSheet`
+ */
 struct SemiCircle: Shape, Animatable {
     var topInset: Double
     

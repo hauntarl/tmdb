@@ -8,6 +8,11 @@
 import Combine
 import SwiftUI
 
+/**
+ `LaunchView` displays the launch screen for this app and loads `now playing` movies.
+ Upon successful retrieval it display the `MoviesView` for the user to interact with
+ fetched movies.
+ */
 struct LaunchView: View {
     static private let colors: [Color] = [
         .black,
@@ -15,9 +20,13 @@ struct LaunchView: View {
         .logoSecondary,
         .logoTertiary,
     ]
+    // Defines animation duration for the background linear gradient.
     static private let delay = 0.5
+    // Calculates total animation duration based on the count of colors and delay.
     static private let totalDuration: Double = { delay * Double(colors.count) }()
     
+    // The background linear gradient animation is re-invoked every time this timer
+    // publishes a new value.
     private let timer = Timer.publish(
         every: (Self.totalDuration - Self.delay) * 2,
         tolerance: Self.delay,
@@ -28,15 +37,13 @@ struct LaunchView: View {
     @Environment(\.animationDuration) var animationDuration
     @State private var gradientColors: [Color] = []
     @State private var scale = 1.0
-    @State private var movies = [Movie]()
+    @State private var nowPlaying = [Movie]()
     
     var body: some View {
-        if movies.isEmpty {
+        if nowPlaying.isEmpty {
             loadingView
-                .transition(.move(edge: .leading))
-                .onDisappear(perform: cancelTimer)
         } else {
-            MoviesView(movies: movies)
+            MoviesView(movies: nowPlaying)
                 .transition(.move(edge: .trailing))
         }
     }
@@ -56,22 +63,21 @@ struct LaunchView: View {
                 .scaleEffect(scale)
         }
         .ignoresSafeArea()
-        .onReceive(timer) { _ in
-            gradientTransition()
-        }
-        .onAppear {
-            gradientTransition()
-        }
-        .task {
-            await fetchMovies()
-        }
+        .transition(.move(edge: .leading))
+        .onReceive(timer) { _ in performAnimation() }
+        .onAppear(perform: performAnimation)
+        .task { await fetchMovies() }
+        .onDisappear(perform: cancelTimer)
     }
     
+    /**
+     Fetches now playing movies from `Movies` aggregate model
+     */
     private func fetchMovies() async {
         do {
-            let nowPlaying = try await Movies.nowPlaying
+            let movies = try await Movies.nowPlaying
             withAnimation(.bouncy(duration: animationDuration).delay(5)) {
-                movies = nowPlaying
+                nowPlaying = movies
             }
         } catch {
             print("Error: \(error.localizedDescription)")
@@ -82,7 +88,7 @@ struct LaunchView: View {
      Add colors to the gradient one at a time with increasing delay for each color.
      After all the colors are added, remove them one by one with increasing delay.
      */
-    private func gradientTransition() {
+    private func performAnimation() {
         // Add breathing effect to the TMDB logo
         withAnimation(
             .easeInOut(duration: Self.totalDuration - Self.delay)

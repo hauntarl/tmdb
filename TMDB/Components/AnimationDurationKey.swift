@@ -8,7 +8,7 @@
 import SwiftUI
 
 /**
- Controls the duration for every common animation and transition throughout the app
+ To control the duration for every common animation and transition throughout the app
  */
 struct AnimationDurationKey: EnvironmentKey {
     static var defaultValue = 0.3

@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+/**
+ This extension deals with all the calculations related to display a radial gradient
+ behind the currently selected category.
+ */
 extension BottomModalSheet {
     func buildOverlay(from preferences: [CategoryPreference]) -> some View {
         movie == .none
@@ -16,7 +20,6 @@ extension BottomModalSheet {
                 RadialGradient(
                     colors: [
                         .logoSecondary.opacity(0.100),
-                        .logoTertiary.opacity(0.075),
                         .clear
                     ],
                     center: .center,
@@ -26,7 +29,7 @@ extension BottomModalSheet {
                 .position(x: frame.midX, y: frame.midY)
             }
         }
-        .allowsHitTesting(false)
+        .allowsHitTesting(false) // Display hit testing for icons to capture the on tap gesture
         : nil
     }
     
