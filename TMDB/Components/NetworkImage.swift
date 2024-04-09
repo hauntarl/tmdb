@@ -40,7 +40,7 @@ struct NetworkImage<I: View, P: View>: View {
     }
     
     private func fetchImage() async {
-        guard let uiImage = await imageCache.fetchImage(from: url) else {
+        guard let uiImage = await imageCache.loadImage(from: url) else {
             return
         }
         
@@ -77,7 +77,7 @@ class ImageCache {
     /**
      Helper method that asynchronously fetches one image and caches it
      */
-    func fetchImage(from url: URL?) async -> UIImage? {
+    func loadImage(from url: URL?) async -> UIImage? {
         // If url is nil, return
         guard let url else {
             return nil
@@ -100,11 +100,11 @@ class ImageCache {
     /**
      Helper method that caches images from url in bulk
      */
-    func fetchImages(from urls: [URL?]) async {
+    func loadImages(from urls: [URL?]) async {
         let _ = await withTaskGroup(of: [UIImage].self) { group -> [UIImage] in
             for url in urls {
                 group.addTask { [unowned self] in
-                    guard let uiImage = await self.fetchImage(from: url) else {
+                    guard let uiImage = await self.loadImage(from: url) else {
                         return []
                     }
                     return [uiImage]

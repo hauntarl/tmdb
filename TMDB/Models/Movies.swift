@@ -27,15 +27,15 @@ struct Movies: Decodable, Equatable {
             queryItems: params
         )
         let movies: Self = try await NetworkService.shared.loadData(from: url)
-        await ImageCache.shared.fetchImages(from: movies.results.map({ $0.posterURL }))
+        await ImageCache.shared.loadImages(from: movies.results.map({ $0.posterURL }))
         return movies.results
     }}
     
     // Factory method that fetches movies based on search query
-    static func search(query: String) async throws -> [Movie] {
+    static func search(query: String, includeAdult: Bool = true) async throws -> [Movie] {
         let params = [
             URLQueryItem(name: "query", value: query),
-            URLQueryItem(name: "include_adult", value: "true"),
+            URLQueryItem(name: "include_adult", value: String(includeAdult)),
             URLQueryItem(name: "language", value: "en-US"),
             URLQueryItem(name: "page", value: "1")
         ]
@@ -44,9 +44,8 @@ struct Movies: Decodable, Equatable {
             relativeTo: NetworkService.baseURL,
             queryItems: params
         )
-        print(url.absoluteString)
         let movies: Self = try await NetworkService.shared.loadData(from: url)
-        await ImageCache.shared.fetchImages(from: movies.results.map({ $0.posterURL }))
+        await ImageCache.shared.loadImages(from: movies.results.map({ $0.posterURL }))
         return movies.results
     }
 }
@@ -75,7 +74,7 @@ struct Movie: Decodable, Identifiable, Equatable {
             relativeTo: NetworkService.baseURL
         )
         let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
-        await ImageCache.shared.fetchImages(from: movies.map({ $0.posterURL }))
+        await ImageCache.shared.loadImages(from: movies.map({ $0.posterURL }))
         return movies
     }}
     
