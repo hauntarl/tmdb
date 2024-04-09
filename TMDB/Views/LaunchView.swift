@@ -11,9 +11,9 @@ import SwiftUI
 struct LaunchView: View {
     static private let colors: [Color] = [
         .black,
-        .init("LogoPrimary"),
-        .init("LogoSecondary"),
-        .init("LogoTertiary"),
+        .logoPrimary,
+        .logoSecondary,
+        .logoTertiary,
     ]
     static private let delay = 0.5
     static private let totalDuration: Double = { delay * Double(colors.count) }()
@@ -119,6 +119,6 @@ struct LaunchView: View {
 
 #Preview {
     LaunchView()
-        .animationDuration(0.5)
+        .animationDuration(1)
         .preferredColorScheme(.dark)
 }
