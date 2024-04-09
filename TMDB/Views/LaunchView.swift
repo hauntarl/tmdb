@@ -27,16 +27,16 @@ struct LaunchView: View {
     
     @Environment(\.animationDuration) var animationDuration
     @State private var gradientColors: [Color] = []
-    @State private var showingLoadingView = true
+    @State private var scale = 1.0
     @State private var movies = [Movie]()
-    @State private var errorMessage: LocalizedStringKey?
     
     var body: some View {
-        if showingLoadingView {
+        if movies.isEmpty {
             loadingView
                 .transition(.move(edge: .leading))
+                .onDisappear(perform: cancelTimer)
         } else {
-            MoviesView(movies: movies, errorMessage: errorMessage)
+            MoviesView(movies: movies)
                 .transition(.move(edge: .trailing))
         }
     }
@@ -53,12 +53,15 @@ struct LaunchView: View {
                 .foregroundStyle(.regularMaterial)
             
             Image("Logo")
+                .scaleEffect(scale)
         }
         .ignoresSafeArea()
         .onReceive(timer) { _ in
             gradientTransition()
         }
-        .onAppear(perform: gradientTransition)
+        .onAppear {
+            gradientTransition()
+        }
         .task {
             await fetchMovies()
         }
@@ -66,13 +69,12 @@ struct LaunchView: View {
     
     private func fetchMovies() async {
         do {
-            movies = try await Movies.nowPlaying
-            errorMessage = nil
+            let nowPlaying = try await Movies.nowPlaying
+            withAnimation(.bouncy(duration: animationDuration).delay(5)) {
+                movies = nowPlaying
+            }
         } catch {
-            errorMessage = "\(error.localizedDescription)"
-        }
-        withAnimation(.bouncy(duration: animationDuration).delay(5)) {
-            showingLoadingView = false
+            print("Error: \(error.localizedDescription)")
         }
     }
     
@@ -81,6 +83,15 @@ struct LaunchView: View {
      After all the colors are added, remove them one by one with increasing delay.
      */
     private func gradientTransition() {
+        // Add breathing effect to the TMDB logo
+        withAnimation(
+            .easeInOut(duration: Self.totalDuration - Self.delay)
+            .repeatForever()
+        ) {
+            scale = 1.1
+        }
+        
+        // Add colors to the gradient
         for index in 0..<Self.colors.count {
             withAnimation(
                 .linear(duration: Self.totalDuration)
@@ -90,6 +101,7 @@ struct LaunchView: View {
             }
         }
         
+        // Remove colors from the gradient
         for index in 0..<Self.colors.count {
             withAnimation(
                 .linear(duration: Self.totalDuration)
