@@ -43,7 +43,7 @@ struct LaunchView: View {
         if nowPlaying.isEmpty {
             loadingView
         } else {
-            MoviesView(movies: nowPlaying)
+            MoviesView(nowPlaying: nowPlaying)
                 .transition(.move(edge: .trailing))
         }
     }
