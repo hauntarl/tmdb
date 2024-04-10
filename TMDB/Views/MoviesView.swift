@@ -19,19 +19,16 @@ struct MoviesView: View {
     @Environment(\.animationDuration) var animationDuration
     @State var selectedMovie: Movie?
     @State var scrolledID: Int?
-    @State var posterURL: URL?
+    @State var posterMovie: Movie?
     @State var selectedCategory: BottomModalSheet.Category
     @State var carouselOffsetY = 0.0
     
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                if let posterURL {
-                    buildPoster(
-                        from: posterURL,
-                        size: proxy.size
-                    )
-                    .zIndex(1.0)
+                if let posterMovie {
+                    buildPoster(for: posterMovie, size: proxy.size)
+                        .zIndex(1.0)
                 }
                 
                 if selectedMovie != .none {
@@ -68,7 +65,7 @@ struct MoviesView: View {
                     .resizable()
                     .scaledToFit()
             } placeholder: {
-                carouselPlaceholder(text: movie.title)
+                carouselPlaceholder
             }
             .frame(width: size.width / 2)
             .clipShape(.rect(cornerRadius: 24))
@@ -84,7 +81,7 @@ struct MoviesView: View {
         }
     }
     
-    func carouselPlaceholder(text: String) -> some View {
+    var carouselPlaceholder: some View {
         Image("Placeholder")
             .resizable()
             .scaledToFit()
@@ -92,9 +89,6 @@ struct MoviesView: View {
             .overlay {
                 Rectangle()
                     .foregroundStyle(.regularMaterial)
-                    .overlay {
-                        ProgressView()
-                    }
             }
     }
     
@@ -102,20 +96,46 @@ struct MoviesView: View {
     func buildBottomSheet(height: Double) -> some View {
         VStack {
             Spacer()
+            if selectedMovie != .none {
+                favoriteButton
+                    .zIndex(2)
+            }
             BottomModalSheet(
                 movie: selectedMovie,
                 availableHeight: height,
                 categories: categories,
                 selection: $selectedCategory.animation(.bouncy(duration: animationDuration))
             )
+            .zIndex(1)
         }
+    }
+    
+    var favoriteButton: some View {
+        HStack {
+            Spacer()
+            Image(systemName: "heart")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30, height: 30)
+                .padding()
+                .background {
+                    Circle()
+                        .foregroundStyle(.ultraThinMaterial)
+                        .overlay {
+                            Circle()
+                                .stroke(lineWidth: 2)
+                        }
+                }
+                .offset(x: -30, y: 30)
+        }
+        .transition(.move(edge: .trailing))
     }
     
     // MARK: Methods
     init(nowPlaying: [Movie]) {
         self.nowPlaying = nowPlaying
         self._scrolledID = .init(initialValue: nowPlaying.first?.id)
-        self._posterURL = .init(initialValue: nowPlaying.first?.posterURL)
+        self._posterMovie = .init(initialValue: nowPlaying.first)
         self._selectedCategory = .init(initialValue: categories[0])
     }
 

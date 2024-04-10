@@ -9,15 +9,22 @@ import SwiftUI
 
 extension MoviesView {
     // MARK: Poster
-    func buildPoster(from url: URL?, size: CGSize) -> some View {
-        NetworkImage(url: url) { image in
+    @ViewBuilder
+    func buildPoster(for movie: Movie, size: CGSize) -> some View {
+        NetworkImage(url: movie.posterURL) { image in
             image
                 .resizable()
                 .scaledToFit()
+                .transition(.opacity)
         } placeholder: {
             posterPlaceholder
+                .transition(.opacity)
         }
         .frame(width: size.width, height: size.height, alignment: .top)
+        .offset(y: selectedMovie == .none ? 50 : .zero)
+        .scaleEffect(selectedMovie == .none ? 1.5 : 1)
+        .blur(radius: selectedMovie == .none ? 5 : .zero)
+        .clipped()
         .overlay {
             LinearGradient(
                 colors: selectedMovie == .none ? [.logoPrimary, .clear] : [],
@@ -25,12 +32,9 @@ extension MoviesView {
                 endPoint: .top
             )
         }
-        .offset(y: selectedMovie == .none ? 50 : .zero)
-        .scaleEffect(selectedMovie == .none ? 1.5 : 1)
-        .blur(radius: selectedMovie == .none ? 5 : .zero)
-        .clipped()
+        .id(movie.id)
         .contentTransition(.interpolate)
-        .transition(.move(edge: .leading).combined(with: .move(edge: .top)))
+        .transition(.opacity)
     }
     
     var posterPlaceholder: some View {
@@ -84,7 +88,7 @@ extension MoviesView {
     
     func updatePosterMovie(scrolledID: Int?) {
         withAnimation(.bouncy(duration: animationDuration)) {
-            posterURL = nowPlaying.first { $0.id == scrolledID }?.posterURL
+            posterMovie = nowPlaying.first { $0.id == scrolledID }
         }
     }
 }
