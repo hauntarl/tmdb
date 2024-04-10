@@ -14,71 +14,129 @@ struct MoviesView: View {
         .init(icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
     ]
     
+    let nowPlaying: [Movie]
+
     @Environment(\.animationDuration) var animationDuration
     @State private var selectedMovie: Movie?
     @State private var selectedCategory: BottomModalSheet.Category
-
-    let nowPlaying: [Movie]
+    @State private var scrolledID: Int?
+    
+    var spotlightMovie: Movie? {
+        nowPlaying.first { $0.id == scrolledID }
+    }
     
     var body: some View {
         GeometryReader { proxy in
-            ZStack {
-                if let movie = selectedMovie {
-                    buildPoster(from: movie.posterURL, proxy: proxy)
-                } else {
-                    content
+            ZStack(alignment: .top) {
+                if let spotlightMovie {
+                    buildPoster(
+                        from: spotlightMovie.posterURL,
+                        width: proxy.size.width
+                    )
+                    .zIndex(1.0)
+                    
+                    if selectedMovie != .none {
+                        hideDetailsButton
+                            .zIndex(2.0)
+                    }
                 }
                 
-                buildBottomSheet(proxy: proxy)
-                    .zIndex(2.0)
+                if selectedMovie == .none {
+                    buildCarousel(size: proxy.size)
+                        .zIndex(2.0)
+                }
+                
+                buildBottomSheet(height: proxy.size.height)
+                    .zIndex(3.0)
             }
-            .ignoresSafeArea()
         }
+        .ignoresSafeArea()
     }
     
-    // TODO: Replace list view with horizontal carousel
-    var content: some View {
-        List {
-            ForEach(nowPlaying) { movie in
-                HStack {
-                    NetworkImage(url: movie.posterURL) { image in
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    } placeholder: {
-                        Rectangle()
-                            .foregroundStyle(.regularMaterial)
+    // MARK: Wheel Carousel
+    func buildCarousel(size: CGSize) -> some View {
+        WheelCarousel(
+            items: nowPlaying,
+            scrolledID: $scrolledID,
+            rotation: 10,
+            offsetY: 20,
+            horizontalInset: size.width / 4
+        ) { movie in
+            NetworkImage(url: movie.posterURL) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+            } placeholder: {
+                carouselPlaceholder(text: movie.title)
+            }
+            .frame(width: size.width / 2)
+            .clipShape(.rect(cornerRadius: 24))
+            .shadow(radius: 10)
+            .onTapGesture {
+                select(movie: movie)
+            }
+        }
+        .safeAreaPadding(.top, 80)
+        .transition(.move(edge: .bottom))
+    }
+    
+    func carouselPlaceholder(text: String) -> some View {
+        Image("Placeholder")
+            .resizable()
+            .scaledToFit()
+            .hidden()
+            .overlay {
+                Rectangle()
+                    .foregroundStyle(.regularMaterial)
+                    .overlay {
+                        ProgressView()
                     }
-                    .clipShape(.circle)
-                    .frame(width: 40, height: 40)
-
-                    Text(movie.title)
-                }
-                .onTapGesture {
-                    selectMovie(movie: movie)
-                }
             }
-        }
-        .transition(.blurReplace)
     }
     
-    @ViewBuilder
-    func buildPoster(from url: URL?, proxy: GeometryProxy) -> some View {
+    // MARK: Poster
+    func buildPoster(from url: URL?, width: Double) -> some View {
         NetworkImage(url: url) { image in
             image
                 .resizable()
-                .scaledToFill()
+                .scaledToFit()
         } placeholder: {
-            Rectangle()
-                .foregroundStyle(.logoPrimary)
+            posterPlaceholder
         }
-        .frame(width: proxy.size.width, height: proxy.size.height)
+        .frame(width: width)
         .clipped()
-        .transition(.blurReplace)
-        .ignoresSafeArea()
-        
+        .overlay {
+            LinearGradient(
+                colors: selectedMovie == .none ? [.logoPrimary, .clear] : [],
+                startPoint: .bottom,
+                endPoint: .top
+            )
+        }
+        .scaleEffect(selectedMovie == .none ? 1.5 : 1)
+        .blur(radius: selectedMovie == .none ? 5 : .zero)
+        .contentTransition(.interpolate)
+        .transition(.move(edge: .leading).combined(with: .move(edge: .top)))
+        .animation(.bouncy(duration: animationDuration), value: url)
+    }
+    
+    var posterPlaceholder: some View {
+        Image("Placeholder")
+            .resizable()
+            .scaledToFit()
+            .hidden()
+            .overlay {
+                Rectangle()
+                    .foregroundStyle(.regularMaterial)
+                    .overlay {
+                        Image("Logo")
+                    }
+            }
+    }
+    
+    var hideDetailsButton: some View {
         Button {
-            selectMovie(movie: nil)
+            select(movie: nil)
+            
         } label: {
             Image(systemName: "arrow.left")
                 .resizable()
@@ -96,24 +154,27 @@ struct MoviesView: View {
         .transition(.move(edge: .leading))
     }
     
-    func buildBottomSheet(proxy: GeometryProxy) -> some View {
+    // MARK: BottomModalSheet
+    func buildBottomSheet(height: Double) -> some View {
         VStack {
             Spacer()
             BottomModalSheet(
                 movie: selectedMovie,
-                availableHeight: proxy.size.height,
+                availableHeight: height,
                 categories: categories,
                 selection: $selectedCategory.animation(.bouncy(duration: animationDuration))
             )
         }
     }
     
+    // MARK: Methods
     init(nowPlaying: [Movie]) {
         self.nowPlaying = nowPlaying
         self._selectedCategory = .init(initialValue: categories[0])
+        self._scrolledID = .init(initialValue: nowPlaying.first?.id)
     }
 
-    func selectMovie(movie: Movie?) {
+    func select(movie: Movie?) {
         withAnimation(.bouncy(duration: animationDuration)) {
             selectedMovie = movie
         }

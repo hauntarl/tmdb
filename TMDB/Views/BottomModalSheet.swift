@@ -40,12 +40,12 @@ struct BottomModalSheet: View {
                     .transition(transition)
             }
         }
-        .frame(height: movie == .none ? availableHeight * 0.2 : availableHeight * 0.6)
+        .frame(height: movie == .none ? availableHeight * 0.2 : availableHeight * 0.45)
         .padding(.top, 50)
         .background(.ultraThickMaterial)
         // Displays a radial gradient behind currently selected category
         .overlayPreferenceValue(CategoryPreferenceKey.self, buildOverlay(from:))
-        .clipShape(SemiCircle(topInset: movie == .none ? availableHeight * 0.1 : .zero))
+        .clipShape(SemiCircle(radius: movie == .none ? availableHeight * 0.08 : .zero))
     }
     
     /**
@@ -117,8 +117,8 @@ struct BottomModalSheet: View {
                             .animation(.bouncy(duration: animationDuration))
                     )
                 }
-                .ignoresSafeArea(edges: .bottom)
             }
+            .ignoresSafeArea(edges: .bottom)
         }
         
         init() {

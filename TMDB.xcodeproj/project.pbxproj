@@ -67,9 +67,9 @@
 			children = (
 				FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */,
 				FC92EB712BC436C100B90E16 /* MoviesView.swift */,
-				FC92EB872BC49B6B00B90E16 /* MovieDetailView.swift */,
 				FC92EB8B2BC5650A00B90E16 /* BottomModalSheet.swift */,
 				FC92EB932BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift */,
+				FC92EB872BC49B6B00B90E16 /* MovieDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

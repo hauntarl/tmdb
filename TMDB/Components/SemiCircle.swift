@@ -11,18 +11,18 @@ import SwiftUI
  Animatable semi-circle shape that is used as clip shape for `BottomModalSheet`
  */
 struct SemiCircle: Shape, Animatable {
-    var topInset: Double
+    var radius: Double
     
     var animatableData: Double {
-        get { topInset }
-        set { topInset = newValue }
+        get { radius }
+        set { radius = newValue }
     }
     
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        path.move(to: CGPoint(x: .zero, y: topInset))
+        path.move(to: CGPoint(x: .zero, y: radius))
         path.addQuadCurve(
-            to: CGPoint(x: rect.width, y: topInset),
+            to: CGPoint(x: rect.width, y: radius),
             control: CGPoint(x: rect.width * 0.5, y: .zero)
         )
         path.addLine(to: CGPoint(x: rect.width, y: rect.height))
@@ -32,7 +32,7 @@ struct SemiCircle: Shape, Animatable {
 }
 
 #Preview {
-    SemiCircle(topInset: 50)
+    SemiCircle(radius: 50)
         .foregroundStyle(.regularMaterial)
         .frame(height: 200)
         .preferredColorScheme(.dark)
