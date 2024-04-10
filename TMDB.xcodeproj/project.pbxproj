@@ -25,6 +25,7 @@
 		FC9B97122BC423B80082E972 /* TMDBApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9B97112BC423B80082E972 /* TMDBApp.swift */; };
 		FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97152BC423BA0082E972 /* Assets.xcassets */; };
 		FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */; };
+		FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		FC9B97112BC423B80082E972 /* TMDBApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBApp.swift; sourceTree = "<group>"; };
 		FC9B97152BC423BA0082E972 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelCarousel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 				FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */,
 				FC92EB892BC4A9D700B90E16 /* NetworkImage.swift */,
 				FC92EB952BC5904400B90E16 /* SemiCircle.swift */,
+				FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 				FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */,
 				FC92EB942BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift in Sources */,
 				FC92EB882BC49B6B00B90E16 /* MovieDetailView.swift in Sources */,
+				FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */,
 				FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */,
 				FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */,
 				FC92EB822BC469C700B90E16 /* Samples.swift in Sources */,
