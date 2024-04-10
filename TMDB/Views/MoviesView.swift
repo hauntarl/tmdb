@@ -22,6 +22,7 @@ struct MoviesView: View {
     @State var posterMovie: Movie?
     @State var selectedCategory: BottomModalSheet.Category
     @State var carouselOffsetY = 0.0
+    @State var isFavorite = false
     
     var body: some View {
         GeometryReader { proxy in
@@ -113,20 +114,30 @@ struct MoviesView: View {
     var favoriteButton: some View {
         HStack {
             Spacer()
-            Image(systemName: "heart")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 30, height: 30)
-                .padding()
-                .background {
-                    Circle()
-                        .foregroundStyle(.ultraThinMaterial)
-                        .overlay {
-                            Circle()
-                                .stroke(lineWidth: 2)
-                        }
-                }
-                .offset(x: -30, y: 30)
+            FavoriteButton(
+                isFavorite: $isFavorite.animation(.bouncy(duration: animationDuration)),
+                size: 30
+            )
+            .foregroundStyle(.primary)
+            .padding(10)
+            .background {
+                Circle()
+                    .foregroundStyle(.ultraThinMaterial)
+                    .overlay {
+                        Circle()
+                            .stroke(lineWidth: 2)
+                            .foregroundStyle(
+                                .linearGradient(
+                                    colors: isFavorite
+                                    ? [.logoSecondary, .logoTertiary]
+                                    : [.primary],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                    }
+            }
+            .offset(x: -30, y: 30)
         }
         .transition(.move(edge: .trailing))
     }

@@ -11,6 +11,7 @@
 		FC001D312BC6DEB400F2E5E5 /* Jost-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */; };
 		FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */; };
 		FC001D352BC70B3600F2E5E5 /* MoviesView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */; };
+		FC3A53302BC7393400594517 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A532F2BC7393400594517 /* FavoriteButton.swift */; };
 		FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */; };
 		FC92EB722BC436C100B90E16 /* MoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB712BC436C100B90E16 /* MoviesView.swift */; };
 		FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */; };
@@ -38,6 +39,7 @@
 		FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Light.ttf"; sourceTree = "<group>"; };
 		FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
 		FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Extension.swift"; sourceTree = "<group>"; };
+		FC3A532F2BC7393400594517 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		FC92EB712BC436C100B90E16 /* MoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesView.swift; sourceTree = "<group>"; };
 		FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDurationKey.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				FC92EB892BC4A9D700B90E16 /* NetworkImage.swift */,
 				FC92EB952BC5904400B90E16 /* SemiCircle.swift */,
 				FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */,
+				FC3A532F2BC7393400594517 /* FavoriteButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */,
 				FC92EB822BC469C700B90E16 /* Samples.swift in Sources */,
 				FC92EB8C2BC5650A00B90E16 /* BottomModalSheet.swift in Sources */,
+				FC3A53302BC7393400594517 /* FavoriteButton.swift in Sources */,
 				FC92EB722BC436C100B90E16 /* MoviesView.swift in Sources */,
 				FC92EB982BC5B38F00B90E16 /* ImageCache.swift in Sources */,
 				FC92EB792BC4436900B90E16 /* Movies.swift in Sources */,
