@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FC001D302BC6DEB400F2E5E5 /* Jost-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */; };
+		FC001D312BC6DEB400F2E5E5 /* Jost-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */; };
+		FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */; };
+		FC001D352BC70B3600F2E5E5 /* MoviesView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */; };
 		FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */; };
 		FC92EB722BC436C100B90E16 /* MoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB712BC436C100B90E16 /* MoviesView.swift */; };
 		FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */; };
@@ -29,6 +33,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FC001D2D2BC6DDF800F2E5E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Medium.ttf"; sourceTree = "<group>"; };
+		FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Light.ttf"; sourceTree = "<group>"; };
+		FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
+		FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Extension.swift"; sourceTree = "<group>"; };
 		FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		FC92EB712BC436C100B90E16 /* MoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesView.swift; sourceTree = "<group>"; };
 		FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDurationKey.swift; sourceTree = "<group>"; };
@@ -62,11 +71,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FC001D2A2BC6DD0E00F2E5E5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */,
+				FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */,
+				FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		FC92EB6D2BC4264D00B90E16 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */,
 				FC92EB712BC436C100B90E16 /* MoviesView.swift */,
+				FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */,
 				FC92EB8B2BC5650A00B90E16 /* BottomModalSheet.swift */,
 				FC92EB932BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift */,
 				FC92EB872BC49B6B00B90E16 /* MovieDetailView.swift */,
@@ -123,10 +143,12 @@
 		FC9B97102BC423B80082E972 /* TMDB */ = {
 			isa = PBXGroup;
 			children = (
+				FC001D2D2BC6DDF800F2E5E5 /* Info.plist */,
 				FC92EB7C2BC4522900B90E16 /* Networking */,
 				FC92EB772BC4435900B90E16 /* Models */,
 				FC92EB6D2BC4264D00B90E16 /* Views */,
 				FC92EB702BC4267F00B90E16 /* Components */,
+				FC001D2A2BC6DD0E00F2E5E5 /* Fonts */,
 				FC9B97112BC423B80082E972 /* TMDBApp.swift */,
 				FC92EB752BC43F1500B90E16 /* Launch Screen.storyboard */,
 				FC9B97152BC423BA0082E972 /* Assets.xcassets */,
@@ -205,6 +227,8 @@
 				FC92EB862BC4938E00B90E16 /* Secrets.yml in Resources */,
 				FC92EB762BC43F1500B90E16 /* Launch Screen.storyboard in Resources */,
 				FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */,
+				FC001D312BC6DEB400F2E5E5 /* Jost-Light.ttf in Resources */,
+				FC001D302BC6DEB400F2E5E5 /* Jost-Medium.ttf in Resources */,
 				FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,9 +246,11 @@
 				FC9B97122BC423B80082E972 /* TMDBApp.swift in Sources */,
 				FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */,
 				FC92EB942BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift in Sources */,
+				FC001D352BC70B3600F2E5E5 /* MoviesView+Extension.swift in Sources */,
 				FC92EB882BC49B6B00B90E16 /* MovieDetailView.swift in Sources */,
 				FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */,
 				FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */,
+				FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */,
 				FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */,
 				FC92EB822BC469C700B90E16 /* Samples.swift in Sources */,
 				FC92EB8C2BC5650A00B90E16 /* BottomModalSheet.swift in Sources */,
@@ -367,6 +393,7 @@
 				DEVELOPMENT_TEAM = N477T5ZBLS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TMDB;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -383,7 +410,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hauntarl.swiftui.TMDB;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftui.hauntarl.TMDB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -402,6 +429,7 @@
 				DEVELOPMENT_TEAM = N477T5ZBLS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TMDB/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TMDB;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -418,7 +446,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hauntarl.swiftui.TMDB;
+				PRODUCT_BUNDLE_IDENTIFIER = swiftui.hauntarl.TMDB;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

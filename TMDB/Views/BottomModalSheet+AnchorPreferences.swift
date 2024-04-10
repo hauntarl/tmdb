@@ -33,8 +33,15 @@ extension BottomModalSheet {
         : nil
     }
     
+    enum CategoryName: String {
+        case movies
+        case favorites = "Favorites"
+        case search = "Search"
+    }
+    
     struct Category: Identifiable, Equatable {
         var id: String { icon + highlighted }
+        let name: CategoryName
         let icon: String
         let highlighted: String
     }

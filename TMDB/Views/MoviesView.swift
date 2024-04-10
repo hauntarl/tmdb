@@ -9,42 +9,43 @@ import SwiftUI
 
 struct MoviesView: View {
     private let categories: [BottomModalSheet.Category] = [
-        .init(icon: "house", highlighted: "house.fill"),
-        .init(icon: "heart", highlighted: "heart.fill"),
-        .init(icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
+        .init(name: .movies, icon: "house", highlighted: "house.fill"),
+        .init(name: .favorites, icon: "heart", highlighted: "heart.fill"),
+        .init(name: .search, icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
     ]
     
     let nowPlaying: [Movie]
 
     @Environment(\.animationDuration) var animationDuration
-    @State private var selectedMovie: Movie?
-    @State private var selectedCategory: BottomModalSheet.Category
-    @State private var scrolledID: Int?
-    
-    var spotlightMovie: Movie? {
-        nowPlaying.first { $0.id == scrolledID }
-    }
+    @State var selectedMovie: Movie?
+    @State var scrolledID: Int?
+    @State var posterURL: URL?
+    @State var selectedCategory: BottomModalSheet.Category
+    @State var carouselOffsetY = 0.0
     
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                if let spotlightMovie {
+                if let posterURL {
                     buildPoster(
-                        from: spotlightMovie.posterURL,
-                        width: proxy.size.width
+                        from: posterURL,
+                        size: proxy.size
                     )
                     .zIndex(1.0)
-                    
-                    if selectedMovie != .none {
-                        hideDetailsButton
-                            .zIndex(2.0)
-                    }
+                }
+                
+                if selectedMovie != .none {
+                    hideDetailsButton
+                        .zIndex(2.0)
                 }
                 
                 if selectedMovie == .none {
-                    buildCarousel(size: proxy.size)
+                    titleView
                         .zIndex(2.0)
                 }
+                
+                buildCarousel(size: proxy.size)
+                    .zIndex(2.0)
                 
                 buildBottomSheet(height: proxy.size.height)
                     .zIndex(3.0)
@@ -77,7 +78,10 @@ struct MoviesView: View {
             }
         }
         .safeAreaPadding(.top, 80)
-        .transition(.move(edge: .bottom))
+        .offset(y: carouselOffsetY)
+        .onChange(of: scrolledID) {
+            updatePosterMovie(scrolledID: scrolledID)
+        }
     }
     
     func carouselPlaceholder(text: String) -> some View {
@@ -92,66 +96,6 @@ struct MoviesView: View {
                         ProgressView()
                     }
             }
-    }
-    
-    // MARK: Poster
-    func buildPoster(from url: URL?, width: Double) -> some View {
-        NetworkImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFit()
-        } placeholder: {
-            posterPlaceholder
-        }
-        .frame(width: width)
-        .clipped()
-        .overlay {
-            LinearGradient(
-                colors: selectedMovie == .none ? [.logoPrimary, .clear] : [],
-                startPoint: .bottom,
-                endPoint: .top
-            )
-        }
-        .scaleEffect(selectedMovie == .none ? 1.5 : 1)
-        .blur(radius: selectedMovie == .none ? 5 : .zero)
-        .contentTransition(.interpolate)
-        .transition(.move(edge: .leading).combined(with: .move(edge: .top)))
-        .animation(.bouncy(duration: animationDuration), value: url)
-    }
-    
-    var posterPlaceholder: some View {
-        Image("Placeholder")
-            .resizable()
-            .scaledToFit()
-            .hidden()
-            .overlay {
-                Rectangle()
-                    .foregroundStyle(.regularMaterial)
-                    .overlay {
-                        Image("Logo")
-                    }
-            }
-    }
-    
-    var hideDetailsButton: some View {
-        Button {
-            select(movie: nil)
-            
-        } label: {
-            Image(systemName: "arrow.left")
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(.logoTertiary)
-                .frame(width: 25, height: 25)
-                .padding(.horizontal, 15)
-                .padding(.vertical, 5)
-                .background {
-                    Capsule()
-                        .foregroundStyle(.ultraThickMaterial)
-                }
-        }
-        .position(x: 50, y: 75)
-        .transition(.move(edge: .leading))
     }
     
     // MARK: BottomModalSheet
@@ -170,12 +114,20 @@ struct MoviesView: View {
     // MARK: Methods
     init(nowPlaying: [Movie]) {
         self.nowPlaying = nowPlaying
-        self._selectedCategory = .init(initialValue: categories[0])
         self._scrolledID = .init(initialValue: nowPlaying.first?.id)
+        self._posterURL = .init(initialValue: nowPlaying.first?.posterURL)
+        self._selectedCategory = .init(initialValue: categories[0])
     }
 
     func select(movie: Movie?) {
         withAnimation(.bouncy(duration: animationDuration)) {
+            if let selectedMovie {
+                scrolledID = selectedMovie.id
+                carouselOffsetY = 0
+            } else if let movie {
+                scrolledID = movie.id
+                carouselOffsetY = 100
+            }
             selectedMovie = movie
         }
     }

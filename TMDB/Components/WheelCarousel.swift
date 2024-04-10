@@ -20,8 +20,6 @@ import SwiftUI
     - content: Returns a views based on the provided item from `items`
  */
 struct WheelCarousel<Item: Identifiable, Content: View>: View {
-    @Environment(\.animationDuration) var animationDuration
-
     let items: [Item]
     @Binding var scrolledID: Item.ID?
     let rotation: Double
@@ -34,6 +32,7 @@ struct WheelCarousel<Item: Identifiable, Content: View>: View {
             LazyHStack {
                 ForEach(items) { item in
                     content(item)
+                        .containerRelativeFrame(.horizontal)
                         .scrollTransition { content, phase in
                             let (angle, anchor) = rotation(for: phase)
                             return content
@@ -41,14 +40,14 @@ struct WheelCarousel<Item: Identifiable, Content: View>: View {
                                 .offset(y: phase.isIdentity ? .zero : offsetY)
                         }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .scrollTargetLayout()
         }
-        .scrollPosition(id: $scrolledID)
         .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $scrolledID)
         .scrollIndicators(.never)
         .safeAreaPadding(.horizontal, horizontalInset)
-        .animation(.bouncy(duration: animationDuration), value: scrolledID)
     }
     
     func scrollButton(systemImage: String, action: @escaping () -> Void) -> some View {

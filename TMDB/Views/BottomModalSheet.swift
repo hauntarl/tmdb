@@ -40,8 +40,8 @@ struct BottomModalSheet: View {
                     .transition(transition)
             }
         }
-        .frame(height: movie == .none ? availableHeight * 0.2 : availableHeight * 0.45)
-        .padding(.top, 50)
+        .frame(height: movie == .none ? availableHeight * 0.2 : nil)
+        .padding(.top, movie == .none ? 50 : .zero)
         .background(.ultraThickMaterial)
         // Displays a radial gradient behind currently selected category
         .overlayPreferenceValue(CategoryPreferenceKey.self, buildOverlay(from:))
@@ -81,9 +81,9 @@ struct BottomModalSheet: View {
 #Preview {
     struct BottomModalSheetPreview: View {
         private let categories: [BottomModalSheet.Category] = [
-            .init(icon: "house", highlighted: "house.fill"),
-            .init(icon: "heart", highlighted: "heart.fill"),
-            .init(icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
+            .init(name: .movies, icon: "house", highlighted: "house.fill"),
+            .init(name: .favorites, icon: "heart", highlighted: "heart.fill"),
+            .init(name: .search, icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
         ]
 
         @Environment(\.animationDuration) var animationDuration
