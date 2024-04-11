@@ -32,6 +32,7 @@
 		FC9B97162BC423BA0082E972 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97152BC423BA0082E972 /* Assets.xcassets */; };
 		FC9B97192BC423BA0082E972 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */; };
 		FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */; };
+		FCF879812BC840F000445933 /* SimilarMoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF879802BC840F000445933 /* SimilarMoviesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		FC9B97152BC423BA0082E972 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FC9B97182BC423BA0082E972 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FCE45B382BC62BD4003D6461 /* WheelCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WheelCarousel.swift; sourceTree = "<group>"; };
+		FCF879802BC840F000445933 /* SimilarMoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarMoviesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				FC92EB8B2BC5650A00B90E16 /* BottomModalSheet.swift */,
 				FC92EB932BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift */,
 				FC92EB872BC49B6B00B90E16 /* MovieDetailView.swift */,
+				FCF879802BC840F000445933 /* SimilarMoviesView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC3A53322BC752C500594517 /* MoviesView+BottomModalSheet.swift in Sources */,
+				FCF879812BC840F000445933 /* SimilarMoviesView.swift in Sources */,
 				FC92EB962BC5904500B90E16 /* SemiCircle.swift in Sources */,
 				FC92EB8A2BC4A9D700B90E16 /* NetworkImage.swift in Sources */,
 				FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */,

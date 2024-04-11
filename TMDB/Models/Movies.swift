@@ -91,9 +91,9 @@ struct Movie: Codable, Identifiable, Equatable {
             for: "/movie/\(id)/similar",
             relativeTo: NetworkService.baseURL
         )
-        let movies: [Movie] = try await NetworkService.shared.loadData(from: url)
-        await ImageCache.shared.loadImages(from: movies.map({ $0.posterURL }))
-        return movies
+        let movies: Movies = try await NetworkService.shared.loadData(from: url)
+        await ImageCache.shared.loadImages(from: movies.results.map({ $0.posterURL }))
+        return movies.results
     }}
     
     enum CodingKeys: String, CodingKey {

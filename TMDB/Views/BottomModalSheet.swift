@@ -42,7 +42,7 @@ struct BottomModalSheet: View {
         }
         .frame(height: movie == .none ? availableHeight * 0.2 : nil)
         .padding(.top, movie == .none ? 50 : .zero)
-        .background(.ultraThickMaterial)
+        .background(.regularMaterial)
         // Displays a radial gradient behind currently selected category
         .overlayPreferenceValue(CategoryPreferenceKey.self, bottomModalSheetOverlay(from:))
         .clipShape(SemiCircle(radius: movie == .none ? availableHeight * 0.08 : .zero))

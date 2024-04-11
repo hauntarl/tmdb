@@ -117,7 +117,7 @@ struct MoviesView: View {
                 .scaleEffect(1.5)
                 .frame(width: size.width, height: size.height, alignment: .top)
                 .blur(radius: 20)
-                .opacity(0.4)
+                .opacity(0.3)
         }
         .clipped()
         .transition(.opacity)

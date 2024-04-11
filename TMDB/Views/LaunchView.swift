@@ -21,7 +21,7 @@ struct LaunchView: View {
         .logoTertiary,
     ]
     // Defines animation duration for the background linear gradient.
-    static private let delay = 0.5
+    static private let delay = 0.25
     // Calculates total animation duration based on the count of colors and delay.
     static private let totalDuration: Double = { delay * Double(colors.count) }()
     
@@ -76,7 +76,7 @@ struct LaunchView: View {
     private func fetchMovies() async {
         do {
             let movies = try await Movies.nowPlaying
-            withAnimation(.bouncy(duration: animationDuration).delay(5)) {
+            withAnimation(.bouncy(duration: animationDuration).delay(3)) {
                 nowPlaying = movies
             }
         } catch {

@@ -9,13 +9,22 @@ import SwiftUI
 
 struct MovieDetailView: View {
     let movie: Movie
+    var showSimilarMovies = true
+    
+    @Environment(\.animationDuration) private var animationDuration
+    @State private var selectedSimilarMovie: Movie?
 
     var body: some View {
         VStack(spacing: .zero) {
             content
-            similar
+            if showSimilarMovies {
+                similar
+            }
         }
         .padding(.bottom, 30)
+        .sheet(item: $selectedSimilarMovie) { movie in
+            similarMovieDetails(for: movie)
+        }
     }
     
     var content: some View {
@@ -30,13 +39,15 @@ struct MovieDetailView: View {
                 .lineLimit(8)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            Spacer().frame(height: 40)
-            
-            Text("More like this")
-                .font(.custom(Font.jostMedium, size: 18))
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Spacer().frame(height: 20)
+            if showSimilarMovies {
+                Spacer().frame(height: 40)
+                
+                Text("More like this")
+                    .font(.custom(Font.jostMedium, size: 18))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer().frame(height: 20)
+            }
         }
         .padding([.horizontal, .top], 20)
     }
@@ -73,26 +84,37 @@ struct MovieDetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
     
-    // TODO: Fetch similar movies and display
     var similar: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: 15) {
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.regularMaterial)
-                    .frame(width: 150)
-                
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.regularMaterial)
-                    .frame(width: 150)
-                
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(.regularMaterial)
-                    .frame(width: 150)
+        SimilarMoviesView(movie: movie, itemWidth: 150, leadingInset: 18) { movie in
+            withAnimation(.bouncy(duration: animationDuration)) {
+                selectedSimilarMovie = movie
             }
-            .safeAreaPadding(.leading, 18)
-            .frame(height: 200)
         }
-        .scrollIndicators(.never)
+        .id(movie.id)
+        .ignoresSafeArea()
+    }
+    
+    func similarMovieDetails(for movie: Movie) -> some View {
+        ZStack {
+            GeometryReader { proxy in
+                NetworkImage(url: movie.posterURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .clipped()
+                } placeholder: {
+                    Rectangle()
+                        .foregroundStyle(.regularMaterial)
+                }
+                .frame(width: proxy.size.width, height: proxy.size.height)
+            }
+            
+            VStack {
+                Spacer()
+                MovieDetailView(movie: movie, showSimilarMovies: false)
+                    .background(.regularMaterial)
+            }
+        }
     }
     
     var year: String {
