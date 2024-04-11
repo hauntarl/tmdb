@@ -42,7 +42,6 @@ struct FavoriteButton: View {
             }
         }
         .font(.system(size: size))
-        .animation(.bouncy(duration: animationDuration), value: isFavorite)
     }
     
     init(

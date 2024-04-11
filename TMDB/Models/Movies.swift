@@ -81,6 +81,10 @@ struct Movie: Codable, Identifiable, Equatable {
     let releaseYear: Int?
     let rating: Double
     
+    static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
         let url = try NetworkService.buildURL(

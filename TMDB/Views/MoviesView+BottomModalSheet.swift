@@ -32,7 +32,7 @@ extension MoviesView {
                     case .favorites:
                         movies = favorites.values.sorted { $0.title < $1.title }
                     case .search:
-                        // TODO: transition to search view
+                        movies = []
                         break
                     }
                     
@@ -59,6 +59,7 @@ extension MoviesView {
             .offset(x: -30, y: 30)
         }
         .id(selectedMovie?.id)
+        .animation(.bouncy(duration: animationDuration), value: favorites[selectedMovie?.id ?? .zero])
     }
     
     var favoriteButtonBackground: some View {
@@ -87,14 +88,16 @@ extension MoviesView {
         if isFavorite {
             // Add the selected movie to favorites
             favorites[movie.id] = movie
-            if selectedCategory.name == .favorites {
-                movies.append(movie)
-            }
         } else {
             // Remove selected movie from favorites
             favorites.removeValue(forKey: movie.id)
             if selectedCategory.name == .favorites, let index = movies.firstIndex(of: movie) {
                 movies.remove(at: index)
+                withAnimation(.bouncy(duration: animationDuration)) {
+                    let nextIndex = index < movies.endIndex ? index : movies.endIndex - 1
+                    updateCarouselState(using: nextIndex > -1 ? movies[nextIndex].id : nil, showingCarousel: true)
+                    selectedMovie = nil
+                }
             }
         }
         

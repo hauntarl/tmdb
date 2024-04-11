@@ -88,7 +88,11 @@ extension MoviesView {
     
     func updatePosterMovie(scrolledID: Int?) {
         withAnimation(.bouncy(duration: animationDuration)) {
-            posterMovie = nowPlaying.first { $0.id == scrolledID }
+            if let scrolledID {
+                posterMovie = nowPlaying.first { $0.id == scrolledID }
+            } else {
+                posterMovie = nil
+            }
         }
     }
 }

@@ -87,6 +87,7 @@ struct MoviesView: View {
         .safeAreaPadding(.top, 80)
         .offset(y: carouselOffsetY)
         .transition(.move(edge: .bottom))
+        .allowsHitTesting(selectedMovie == nil)
         .onChange(of: scrolledID) {
             updatePosterMovie(scrolledID: scrolledID)
         }
@@ -116,7 +117,7 @@ struct MoviesView: View {
                 .scaleEffect(1.5)
                 .frame(width: size.width, height: size.height, alignment: .top)
                 .blur(radius: 20)
-                .opacity(0.2)
+                .opacity(0.4)
         }
         .clipped()
         .transition(.opacity)
@@ -146,19 +147,18 @@ struct MoviesView: View {
         withAnimation(.bouncy(duration: animationDuration)) {
             if let selectedMovie {
                 // transition from movie details view to tab bar view
-                scrolledID = selectedMovie.id
-                carouselOffsetY = 0
-                if movies.isEmpty {
-                    scrolledID = nil
-                    posterMovie = nil
-                }
+                updateCarouselState(using: selectedMovie.id, showingCarousel: true)
             } else if let movie {
                 // transition from tab bar view to movie details view
-                scrolledID = movie.id
-                carouselOffsetY = 100
+                updateCarouselState(using: movie.id, showingCarousel: false)
             }
             selectedMovie = movie
         }
+    }
+    
+    func updateCarouselState(using newID: Int?, showingCarousel: Bool) {
+        scrolledID = newID
+        carouselOffsetY = showingCarousel ? 0 : 100
     }
 }
 
