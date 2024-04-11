@@ -1,5 +1,5 @@
 //
-//  MoviesView+Extension.swift
+//  MoviesView+Poster.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/10/24.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
+// MARK: Poster
 extension MoviesView {
-    // MARK: Poster
     @ViewBuilder
     func buildPoster(for movie: Movie, size: CGSize) -> some View {
         NetworkImage(url: movie.posterURL) { image in

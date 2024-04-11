@@ -24,8 +24,6 @@ class FontLoader {
         var error: Unmanaged<CFError>?
         if !CTFontManagerRegisterGraphicsFont(font, &error) {
             print("Error loading Font: \(name).\(withExtension).")
-        } else {
-            print("Font: \(name).\(withExtension) loaded successfully.")
         }
     }
 }

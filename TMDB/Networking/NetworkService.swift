@@ -40,6 +40,7 @@ struct NetworkService {
     
     private let networking: Networking
     private let decoder: JSONDecoder
+    private let encoder: JSONEncoder
     
     /**
      A custom initializer required for unit testing while mocking the `URLSession` object.
@@ -47,9 +48,14 @@ struct NetworkService {
      By using a default argument (in this case `.shared`) we can add dependency injection without
      making our app code more complicated.
      */
-    init(using networking: Networking = URLSession.shared, with decoder: JSONDecoder = .init()) {
+    init(
+        using networking: Networking = URLSession.shared,
+        decoder: JSONDecoder = .init(),
+        encoder: JSONEncoder = .init()
+    ) {
         self.networking = networking
         self.decoder = decoder
+        self.encoder = encoder
     }
     
     /**A generic function that fetches data from the given endpoint and decodes it into the provided type.*/
@@ -57,5 +63,18 @@ struct NetworkService {
         let (data, _) = try await networking.data(from: url)
         let response = try decoder.decode(T.self, from: data)
         return response
+    }
+    
+    func loadData<T: Decodable>(from file: String) throws -> T {
+        let url = URL.documentsDirectory.appending(path: file)
+        let data = try Data(contentsOf: url)
+        let response = try decoder.decode(T.self, from: data)
+        return response
+    }
+    
+    func save<T: Encodable>(result: T, to file: String) throws {
+        let url = URL.documentsDirectory.appending(path: file)
+        let data = try encoder.encode(result)
+        try data.write(to: url, options: [.atomic, .completeFileProtection])
     }
 }

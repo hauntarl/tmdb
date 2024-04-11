@@ -10,8 +10,9 @@
 		FC001D302BC6DEB400F2E5E5 /* Jost-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */; };
 		FC001D312BC6DEB400F2E5E5 /* Jost-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */; };
 		FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */; };
-		FC001D352BC70B3600F2E5E5 /* MoviesView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */; };
+		FC001D352BC70B3600F2E5E5 /* MoviesView+Poster.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D342BC70B3600F2E5E5 /* MoviesView+Poster.swift */; };
 		FC3A53302BC7393400594517 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A532F2BC7393400594517 /* FavoriteButton.swift */; };
+		FC3A53322BC752C500594517 /* MoviesView+BottomModalSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A53312BC752C500594517 /* MoviesView+BottomModalSheet.swift */; };
 		FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */; };
 		FC92EB722BC436C100B90E16 /* MoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB712BC436C100B90E16 /* MoviesView.swift */; };
 		FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */; };
@@ -38,8 +39,9 @@
 		FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Medium.ttf"; sourceTree = "<group>"; };
 		FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Light.ttf"; sourceTree = "<group>"; };
 		FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
-		FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Extension.swift"; sourceTree = "<group>"; };
+		FC001D342BC70B3600F2E5E5 /* MoviesView+Poster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Poster.swift"; sourceTree = "<group>"; };
 		FC3A532F2BC7393400594517 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
+		FC3A53312BC752C500594517 /* MoviesView+BottomModalSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+BottomModalSheet.swift"; sourceTree = "<group>"; };
 		FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		FC92EB712BC436C100B90E16 /* MoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesView.swift; sourceTree = "<group>"; };
 		FC92EB732BC4395300B90E16 /* AnimationDurationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDurationKey.swift; sourceTree = "<group>"; };
@@ -88,7 +90,8 @@
 			children = (
 				FC92EB6E2BC4266C00B90E16 /* LaunchView.swift */,
 				FC92EB712BC436C100B90E16 /* MoviesView.swift */,
-				FC001D342BC70B3600F2E5E5 /* MoviesView+Extension.swift */,
+				FC001D342BC70B3600F2E5E5 /* MoviesView+Poster.swift */,
+				FC3A53312BC752C500594517 /* MoviesView+BottomModalSheet.swift */,
 				FC92EB8B2BC5650A00B90E16 /* BottomModalSheet.swift */,
 				FC92EB932BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift */,
 				FC92EB872BC49B6B00B90E16 /* MovieDetailView.swift */,
@@ -243,13 +246,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC3A53322BC752C500594517 /* MoviesView+BottomModalSheet.swift in Sources */,
 				FC92EB962BC5904500B90E16 /* SemiCircle.swift in Sources */,
 				FC92EB8A2BC4A9D700B90E16 /* NetworkImage.swift in Sources */,
 				FC92EB742BC4395300B90E16 /* AnimationDurationKey.swift in Sources */,
 				FC9B97122BC423B80082E972 /* TMDBApp.swift in Sources */,
 				FC92EB6F2BC4266C00B90E16 /* LaunchView.swift in Sources */,
 				FC92EB942BC5803C00B90E16 /* BottomModalSheet+AnchorPreferences.swift in Sources */,
-				FC001D352BC70B3600F2E5E5 /* MoviesView+Extension.swift in Sources */,
+				FC001D352BC70B3600F2E5E5 /* MoviesView+Poster.swift in Sources */,
 				FC92EB882BC49B6B00B90E16 /* MovieDetailView.swift in Sources */,
 				FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */,
 				FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */,

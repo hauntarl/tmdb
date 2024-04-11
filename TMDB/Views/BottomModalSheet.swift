@@ -44,7 +44,7 @@ struct BottomModalSheet: View {
         .padding(.top, movie == .none ? 50 : .zero)
         .background(.ultraThickMaterial)
         // Displays a radial gradient behind currently selected category
-        .overlayPreferenceValue(CategoryPreferenceKey.self, buildOverlay(from:))
+        .overlayPreferenceValue(CategoryPreferenceKey.self, bottomModalSheetOverlay(from:))
         .clipShape(SemiCircle(radius: movie == .none ? availableHeight * 0.08 : .zero))
     }
     
@@ -57,7 +57,7 @@ struct BottomModalSheet: View {
             ForEach(categories) { category in
                 Image(
                     systemName: selection == category
-                    ? category.highlighted
+                    ? category.highlightedIcon
                     : category.icon
                 )
                 .resizable()
@@ -81,9 +81,9 @@ struct BottomModalSheet: View {
 #Preview {
     struct BottomModalSheetPreview: View {
         private let categories: [BottomModalSheet.Category] = [
-            .init(name: .movies, icon: "house", highlighted: "house.fill"),
-            .init(name: .favorites, icon: "heart", highlighted: "heart.fill"),
-            .init(name: .search, icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
+            .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
+            .init(name: .favorites, icon: "heart", highlightedIcon: "heart.fill"),
+            .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
         ]
 
         @Environment(\.animationDuration) var animationDuration

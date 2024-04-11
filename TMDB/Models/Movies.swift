@@ -31,6 +31,20 @@ struct Movies: Decodable, Equatable {
         return movies.results
     }}
     
+    // Factory method that fetches favorite movies from the app's documents directory
+    static var favorites: [Int: Movie] { get async throws {
+        let movies: [Movie] = try NetworkService.shared.loadData(from: "favorites.json")
+        await ImageCache.shared.loadImages(from: movies.map({ $0.posterURL }))
+        return movies
+            .map { ($0.id, $0) }
+            .reduce(into: [:]) { $0[$1.0] = $1.1 }
+    }}
+    
+    // Factory method that saves the list of favorite movies into app's documents directory
+    static func save(favorites: [Movie]) throws {
+        try NetworkService.shared.save(result: favorites, to: "favorites.json")
+    }
+    
     // Factory method that fetches movies based on search query
     static func search(query: String, includeAdult: Bool = true) async throws -> [Movie] {
         let params = [
@@ -58,7 +72,7 @@ struct Movies: Decodable, Equatable {
  It utilizes a custom decoding strategy in order to transform api response into fields
  that can be directly consumed by the views.
  */
-struct Movie: Decodable, Identifiable, Equatable {
+struct Movie: Codable, Identifiable, Equatable {
     let id: Int
     let title: String
     let overview: String
@@ -90,7 +104,7 @@ struct Movie: Decodable, Identifiable, Equatable {
     
     /**
      A custom decoder that efficiently maps json response to respective Swift objects.
-     This is done to reduce data transformation operations at the aggregate model level.
+     This is done to reduce data transformation operations.
      */
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -113,7 +127,28 @@ struct Movie: Decodable, Identifiable, Equatable {
         self.posterURL = try NetworkService.buildURL(for: posterPath, relativeTo: NetworkService.imageBaseURL)
     }
     
-    // posterBaseURL is used to convert poster path to an url pointing towards the image.
+    /**
+     A custom encoder to map `Movie` object to respective json data.
+     */
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        try container.encode(overview, forKey: .overview)
+        try container.encode(popularity, forKey: .popularity)
+        try container.encode(rating, forKey: .rating)
+        
+        var dateComponents = DateComponents()
+        dateComponents.year = releaseYear
+        if let date = Calendar.current.date(from: dateComponents) {
+            try container.encode(Self.dateFormatter.string(from: date), forKey: .releaseDate)
+        }
+        
+        if let path = posterURL?.lastPathComponent {
+            try container.encode(path, forKey: .posterPath)
+        }
+    }
+    
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

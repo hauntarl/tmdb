@@ -8,11 +8,11 @@
 import SwiftUI
 
 /**
- This extension deals with all the calculations related to display a radial gradient
- behind the currently selected category.
+ This extension deals with all the calculations related to displaying a radial gradient
+ for the currently selected category.
  */
 extension BottomModalSheet {
-    func buildOverlay(from preferences: [CategoryPreference]) -> some View {
+    func bottomModalSheetOverlay(from preferences: [CategoryPreference]) -> some View {
         movie == .none
         ? GeometryReader { proxy in
             if let selected = preferences.first(where: { $0.category == selection }) {
@@ -29,21 +29,21 @@ extension BottomModalSheet {
                 .position(x: frame.midX, y: frame.midY)
             }
         }
-        .allowsHitTesting(false) // Display hit testing for icons to capture the on tap gesture
+        .allowsHitTesting(false) // Disable hit testing of the overlay for icons to capture the on tap gesture
         : nil
     }
     
     enum CategoryName: String {
-        case movies
+        case movies = "Movies"
         case favorites = "Favorites"
         case search = "Search"
     }
     
     struct Category: Identifiable, Equatable {
-        var id: String { icon + highlighted }
+        var id: CategoryName { name }
         let name: CategoryName
         let icon: String
-        let highlighted: String
+        let highlightedIcon: String
     }
     
     struct CategoryPreference: Equatable {

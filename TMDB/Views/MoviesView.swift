@@ -8,22 +8,25 @@
 import SwiftUI
 
 struct MoviesView: View {
-    private let categories: [BottomModalSheet.Category] = [
-        .init(name: .movies, icon: "house", highlighted: "house.fill"),
-        .init(name: .favorites, icon: "heart", highlighted: "heart.fill"),
-        .init(name: .search, icon: "magnifyingglass", highlighted: "sparkle.magnifyingglass")
+    let categories: [BottomModalSheet.Category] = [
+        .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
+        .init(name: .favorites, icon: "heart", highlightedIcon: "heart.fill"),
+        .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
     ]
-    
-    let nowPlaying: [Movie]
 
     @Environment(\.animationDuration) var animationDuration
+    
+    let nowPlaying: [Movie]
+    @State var favorites = [Int: Movie]()
+    @State var movies: [Movie]
+
     @State var selectedMovie: Movie?
     @State var scrolledID: Int?
     @State var posterMovie: Movie?
-    @State var selectedCategory: BottomModalSheet.Category
     @State var carouselOffsetY = 0.0
-    @State var isFavorite = false
     
+    @State var selectedCategory: BottomModalSheet.Category
+
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
@@ -32,21 +35,27 @@ struct MoviesView: View {
                         .zIndex(1.0)
                 }
                 
-                if selectedMovie != .none {
-                    hideDetailsButton
-                        .zIndex(2.0)
-                }
-                
-                if selectedMovie == .none {
-                    titleView
-                        .zIndex(2.0)
+                if movies.isEmpty {
+                    contentUnavailable(size: proxy.size)
+                        .zIndex(0.0)
                 }
                 
                 buildCarousel(size: proxy.size)
                     .zIndex(2.0)
                 
+                if selectedMovie != .none {
+                    hideDetailsButton
+                        .zIndex(2.0)
+                } else {
+                    titleView
+                        .zIndex(2.0)
+                }
+                
                 buildBottomSheet(height: proxy.size.height)
                     .zIndex(3.0)
+            }
+            .task {
+                await fetchFavorites()
             }
         }
         .ignoresSafeArea()
@@ -55,7 +64,7 @@ struct MoviesView: View {
     // MARK: Wheel Carousel
     func buildCarousel(size: CGSize) -> some View {
         WheelCarousel(
-            items: nowPlaying,
+            items: movies,
             scrolledID: $scrolledID,
             rotation: 10,
             offsetY: 20,
@@ -77,6 +86,7 @@ struct MoviesView: View {
         }
         .safeAreaPadding(.top, 80)
         .offset(y: carouselOffsetY)
+        .transition(.move(edge: .bottom))
         .onChange(of: scrolledID) {
             updatePosterMovie(scrolledID: scrolledID)
         }
@@ -93,58 +103,40 @@ struct MoviesView: View {
             }
     }
     
-    // MARK: BottomModalSheet
-    func buildBottomSheet(height: Double) -> some View {
-        VStack {
-            Spacer()
-            if selectedMovie != .none {
-                favoriteButton
-                    .zIndex(2)
-            }
-            BottomModalSheet(
-                movie: selectedMovie,
-                availableHeight: height,
-                categories: categories,
-                selection: $selectedCategory.animation(.bouncy(duration: animationDuration))
-            )
-            .zIndex(1)
+    func contentUnavailable(size: CGSize) -> some View {
+        ContentUnavailableView(
+            "Nothing to see here ツ",
+            image: "Logo",
+            description: Text(contentUnavailableDescription)
+        )
+        .background {
+            Image("Placeholder")
+                .resizable()
+                .scaledToFit()
+                .scaleEffect(1.5)
+                .frame(width: size.width, height: size.height, alignment: .top)
+                .blur(radius: 20)
+                .opacity(0.2)
         }
+        .clipped()
+        .transition(.opacity)
     }
     
-    var favoriteButton: some View {
-        HStack {
-            Spacer()
-            FavoriteButton(
-                isFavorite: $isFavorite.animation(.bouncy(duration: animationDuration)),
-                size: 30
-            )
-            .foregroundStyle(.primary)
-            .padding(10)
-            .background {
-                Circle()
-                    .foregroundStyle(.ultraThinMaterial)
-                    .overlay {
-                        Circle()
-                            .stroke(lineWidth: 2)
-                            .foregroundStyle(
-                                .linearGradient(
-                                    colors: isFavorite
-                                    ? [.logoSecondary, .logoTertiary]
-                                    : [.primary],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                            )
-                    }
-            }
-            .offset(x: -30, y: 30)
+    var contentUnavailableDescription: LocalizedStringKey {
+        switch selectedCategory.name {
+        case .movies:
+            return "Movies not available at the moment. Please try again later."
+        case .favorites:
+            return "You do not have any **\(selectedCategory.name.rawValue)**. Start marking some movies as favorites to see them here!"
+        default:
+            return "Not yet implemented"
         }
-        .transition(.move(edge: .trailing))
     }
-    
+
     // MARK: Methods
     init(nowPlaying: [Movie]) {
         self.nowPlaying = nowPlaying
+        self._movies = .init(initialValue: nowPlaying)
         self._scrolledID = .init(initialValue: nowPlaying.first?.id)
         self._posterMovie = .init(initialValue: nowPlaying.first)
         self._selectedCategory = .init(initialValue: categories[0])
@@ -153,9 +145,15 @@ struct MoviesView: View {
     func select(movie: Movie?) {
         withAnimation(.bouncy(duration: animationDuration)) {
             if let selectedMovie {
+                // transition from movie details view to tab bar view
                 scrolledID = selectedMovie.id
                 carouselOffsetY = 0
+                if movies.isEmpty {
+                    scrolledID = nil
+                    posterMovie = nil
+                }
             } else if let movie {
+                // transition from tab bar view to movie details view
                 scrolledID = movie.id
                 carouselOffsetY = 100
             }

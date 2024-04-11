@@ -10,13 +10,16 @@
 import SwiftUI
 
 struct FavoriteButton: View {
-    @Binding var isFavorite: Bool
-    var colors: [Color] = [.logoSecondary, .logoTertiary]
+    @Environment(\.animationDuration) var animationDuration
+    @State private var isFavorite: Bool
+    let colors: [Color]
     let size: Double
+    let action: (Bool) -> Void
     
     var body: some View {
         Button {
             isFavorite.toggle()
+            action(isFavorite)
         } label: {
             if isFavorite {
                 Image(systemName: "heart.fill")
@@ -39,6 +42,19 @@ struct FavoriteButton: View {
             }
         }
         .font(.system(size: size))
+        .animation(.bouncy(duration: animationDuration), value: isFavorite)
+    }
+    
+    init(
+        isFavorite: Bool = false,
+        colors: [Color] = [.logoSecondary, .logoTertiary],
+        size: Double = 30,
+        action: @escaping (Bool) -> Void
+    ) {
+        self._isFavorite = .init(initialValue: isFavorite)
+        self.colors = colors
+        self.size = size
+        self.action = action
     }
 }
 
@@ -51,7 +67,7 @@ extension AnyTransition {
     }
     
     static func confetti<T: ShapeStyle>(
-        style: T = .blue,
+        style: T = .logoSecondary,
         confettiColors: [Color] = [],
         size: Double = 3
     ) -> AnyTransition {
@@ -71,7 +87,6 @@ extension AnyTransition {
 }
 
 struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
-    
     var style: T
     var confettiColors: [Color]
     var size: Double
@@ -85,7 +100,6 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
     @State private var confettiScale = 1.0
     
     @State private var contentScale = 0.00001
-    
     
     func body(content: Content) -> some View {
         content
@@ -101,25 +115,7 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
                             )
                             .scaleEffect(circleSize)
                         
-                        ForEach(0..<15) { i in
-                            Circle()
-                                .fill(confettiColors.randomElement() ?? .logoSecondary)
-                                .frame(
-                                    width: size + sin(Double(i)),
-                                    height: size + sin(Double(i))
-                                )
-                                .scaleEffect(confettiScale)
-                                .offset(
-                                    x: proxy.size.width / 2 * confettiMovement 
-                                    + (i.isMultiple(of: 2) ? size : .zero)
-                                )
-                                .rotationEffect(.degrees(24 * Double(i)))
-                                .offset(
-                                    x: (proxy.size.width - size) / 2,
-                                    y: (proxy.size.height - size) / 2
-                                )
-                                .opacity(confettiIsHidden ? 0 : 1)
-                        }
+                        confettis(availableSize: proxy.size)
                     }
                     
                     content
@@ -127,38 +123,54 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
                 }
             )
             .padding(-10)
-            .onAppear {
-                withAnimation(.easeIn(duration: speed)) {
-                    circleSize = 1
-                }
-                withAnimation(.easeOut(duration: speed).delay(speed)) {
-                    strokeMultiplier = 0.00001
-                }
-                withAnimation(
-                    .interpolatingSpring(stiffness: 50, damping: 5).delay(speed)
-                ) {
-                    contentScale = 1
-                }
-                withAnimation(.easeOut(duration: speed).delay(speed * 1.25)) {
-                    confettiIsHidden = false
-                    confettiMovement = 1.2
-                }
-                withAnimation(.easeOut(duration: speed).delay(speed * 2)) {
-                    confettiScale = 0.00001
-                }
-            }
+            .onAppear(perform: confettiTransition)
+    }
+    
+    func confettis(availableSize: CGSize) -> some View {
+        ForEach(0..<15) { i in
+            Circle()
+                .fill(confettiColors.randomElement() ?? .logoSecondary)
+                .frame(
+                    width: size + sin(Double(i)),
+                    height: size + sin(Double(i))
+                )
+                .scaleEffect(confettiScale)
+                .offset(
+                    x: availableSize.width / 2 * confettiMovement
+                    + (i.isMultiple(of: 2) ? size : .zero)
+                )
+                .rotationEffect(.degrees(24 * Double(i)))
+                .offset(
+                    x: (availableSize.width - size) / 2,
+                    y: (availableSize.height - size) / 2
+                )
+                .opacity(confettiIsHidden ? 0 : 1)
+        }
+    }
+    
+    func confettiTransition() {
+        withAnimation(.easeIn(duration: speed)) {
+            circleSize = 1
+        }
+        withAnimation(.easeOut(duration: speed).delay(speed)) {
+            strokeMultiplier = 0.00001
+        }
+        withAnimation(.interpolatingSpring(stiffness: 50, damping: 5).delay(speed)) {
+            contentScale = 1
+        }
+        withAnimation(.easeOut(duration: speed).delay(speed * 1.25)) {
+            confettiIsHidden = false
+            confettiMovement = 1.2
+        }
+        withAnimation(.easeOut(duration: speed).delay(speed * 2)) {
+            confettiScale = 0.00001
+        }
     }
 }
 
 #Preview {
-    struct FavoriteButtonPreview: View {
-        @State private var isFavorite = false
-        
-        var body: some View {
-            FavoriteButton(isFavorite: $isFavorite, size: 60)
-        }
+    FavoriteButton(size: 60) {
+        print("isFavorite? \($0)")
     }
-    
-    return FavoriteButtonPreview()
-        .animationDuration(1)
+    .animationDuration(1)
 }
