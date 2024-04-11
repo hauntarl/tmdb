@@ -9,13 +9,23 @@
 
 import SwiftUI
 
+/**
+ Displays a confetti style favorite icon button.
+ 
+ - Parameters:
+    - isFavorite: Determines the initial state of the button
+    - colors: The colors this button should utilize for icon, gradient, and confetti
+    - size: The size of the `FavoriteButton` icon
+    - action: A callback that gets triggered every time this button changes its state
+ */
 struct FavoriteButton: View {
-    @Environment(\.animationDuration) var animationDuration
-    @State private var isFavorite: Bool
     let colors: [Color]
     let size: Double
     let action: (Bool) -> Void
     
+    @Environment(\.animationDuration) var animationDuration
+    @State private var isFavorite: Bool
+
     var body: some View {
         Button {
             isFavorite.toggle()
@@ -107,13 +117,7 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
             .overlay(
                 ZStack {
                     GeometryReader { proxy in
-                        Circle()
-                            .strokeBorder(
-                                style,
-                                lineWidth: proxy.size.width / 2 * strokeMultiplier
-                            )
-                            .scaleEffect(circleSize)
-                        
+                        transitionCircle(availableWidth: proxy.size.width)
                         confettis(availableSize: proxy.size)
                     }
                     
@@ -123,6 +127,15 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
             )
             .padding(-10)
             .onAppear(perform: confettiTransition)
+    }
+    
+    func transitionCircle(availableWidth: Double) -> some View {
+        Circle()
+            .strokeBorder(
+                style,
+                lineWidth: availableWidth / 2 * strokeMultiplier
+            )
+            .scaleEffect(circleSize)
     }
     
     func confettis(availableSize: CGSize) -> some View {

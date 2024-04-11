@@ -58,13 +58,19 @@ struct NetworkService {
         self.encoder = encoder
     }
     
-    /**A generic function that fetches data from the given endpoint and decodes it into the provided type.*/
+    /**
+     A generic function that fetches data from the given endpoint and decodes it into the provided type.
+     */
     func loadData<T: Decodable>(from url: URL) async throws -> T {
         let (data, _) = try await networking.data(from: url)
         let response = try decoder.decode(T.self, from: data)
         return response
     }
     
+    /**
+     A generic function that fetches data from the documents directory for the given file name and decodes
+     it into the provided type.
+     */
     func loadData<T: Decodable>(from file: String) throws -> T {
         let url = URL.documentsDirectory.appending(path: file)
         let data = try Data(contentsOf: url)
@@ -72,6 +78,11 @@ struct NetworkService {
         return response
     }
     
+    /**
+     A generic function that writes data to the documents directory for the given file name.
+     - `.atomic` write options makes sure that all of the data is written at the same time
+     - `.completeFileProtection` saves the file in an encrypted format
+     */
     func save<T: Encodable>(result: T, to file: String) throws {
         let url = URL.documentsDirectory.appending(path: file)
         let data = try encoder.encode(result)

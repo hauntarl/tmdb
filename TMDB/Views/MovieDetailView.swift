@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+/**
+ Displays details about the selected movie and also fetches similar movies.
+ 
+ - Parameters:
+    - movie: The movie for which the details need to be displayed
+    - showSimilarMovies: Controls whether or not this view should display similar movies
+ */
 struct MovieDetailView: View {
     let movie: Movie
     var showSimilarMovies = true
@@ -97,6 +104,7 @@ struct MovieDetailView: View {
                 selectedSimilarMovie = movie
             }
         }
+        .id(movie.id)
         .ignoresSafeArea()
     }
     

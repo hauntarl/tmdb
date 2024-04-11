@@ -80,9 +80,9 @@
 		FC001D2A2BC6DD0E00F2E5E5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */,
 				FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */,
 				FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */,
-				FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";

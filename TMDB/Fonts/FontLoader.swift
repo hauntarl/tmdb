@@ -4,7 +4,7 @@
 //
 //  Created by Sameer Mungole on 4/10/24.
 //
-// Load custom font: https://stackoverflow.com/a/66105745
+//  Load custom font: https://stackoverflow.com/a/66105745
 
 import CoreText
 import CoreGraphics

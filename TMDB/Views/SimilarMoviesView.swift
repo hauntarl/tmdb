@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+/**
+ Fetches similar movies for the provided movie and displays it in a horizontal layout.
+ 
+ - Parameters:
+    - movie: The movie for which this view needs to look-up similar movies
+    - itemWidth: Width for each similar movie card in the horizontal layout
+    - leadingInset: The leading safe area padding for the horizontal layout
+    - onSelect: A callback that accepts selected similar movie as a parameter
+ */
 struct SimilarMoviesView: View {
     @Environment(\.animationDuration) private var animationDuration
     @State private var similar: [Movie] = []

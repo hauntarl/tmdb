@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+/**
+ MoviesView is the home screen of this application, it displays a tab bar at the bottom that
+ allows users to hop between different categories. It also displays the content for each tab
+ category.
+ 
+ - Parameters:
+    - nowPlaying: By default `MoviesView` displays now playing movies
+ */
 struct MoviesView: View {
     let categories: [BottomModalSheet.Category] = [
         .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
@@ -14,42 +22,40 @@ struct MoviesView: View {
         .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
     ]
 
-    @Environment(\.animationDuration) var animationDuration
-    
     let nowPlaying: [Movie]
-    @State var favorites = [Int: Movie]()
     @State var movies: [Movie]
-
-    @State var selectedMovie: Movie?
     @State var scrolledID: Int?
     @State var posterMovie: Movie?
-    @State var carouselOffsetY = 0.0
-    
     @State var selectedCategory: BottomModalSheet.Category
+
+    @Environment(\.animationDuration) var animationDuration
+    @State var favorites = [Int: Movie]()
+    @State var selectedMovie: Movie?
+    @State var carouselOffsetY = 0.0
 
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
+                if movies.isEmpty {
+                    contentUnavailable(size: proxy.size)
+                        .zIndex(0.0)
+                }
+
                 if let posterMovie {
                     buildPoster(for: posterMovie, size: proxy.size)
                         .zIndex(1.0)
                 }
                 
-                if movies.isEmpty {
-                    contentUnavailable(size: proxy.size)
-                        .zIndex(0.0)
-                }
-                
-                buildCarousel(size: proxy.size)
-                    .zIndex(2.0)
-                
-                if selectedMovie != .none {
-                    hideDetailsButton
-                        .zIndex(2.0)
-                } else {
+                if selectedMovie == .none {
                     titleView
                         .zIndex(2.0)
+                } else {
+                    hideDetailsButton
+                        .zIndex(2.0)
                 }
+
+                buildCarousel(size: proxy.size)
+                    .zIndex(2.0)
                 
                 buildBottomSheet(height: proxy.size.height)
                     .zIndex(3.0)
@@ -133,16 +139,7 @@ struct MoviesView: View {
             return "Not yet implemented"
         }
     }
-
-    // MARK: Methods
-    init(nowPlaying: [Movie]) {
-        self.nowPlaying = nowPlaying
-        self._movies = .init(initialValue: nowPlaying)
-        self._scrolledID = .init(initialValue: nowPlaying.first?.id)
-        self._posterMovie = .init(initialValue: nowPlaying.first)
-        self._selectedCategory = .init(initialValue: categories[0])
-    }
-
+    
     func select(movie: Movie?) {
         withAnimation(.bouncy(duration: animationDuration)) {
             if let selectedMovie {
@@ -159,6 +156,14 @@ struct MoviesView: View {
     func updateCarouselState(using newID: Int?, showingCarousel: Bool) {
         scrolledID = newID
         carouselOffsetY = showingCarousel ? 0 : 100
+    }
+
+    init(nowPlaying: [Movie]) {
+        self.nowPlaying = nowPlaying
+        self._movies = .init(initialValue: nowPlaying)
+        self._scrolledID = .init(initialValue: nowPlaying.first?.id)
+        self._posterMovie = .init(initialValue: nowPlaying.first)
+        self._selectedCategory = .init(initialValue: categories[0])
     }
 }
 
