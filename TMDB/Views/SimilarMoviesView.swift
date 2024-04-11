@@ -32,7 +32,6 @@ struct SimilarMoviesView: View {
             .frame(height: itemWidth * 1.5)
         }
         .scrollIndicators(.never)
-        .transition(.move(edge: .trailing))
         .task { await fetchSimilar() }
     }
     

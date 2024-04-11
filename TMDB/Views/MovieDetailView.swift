@@ -13,17 +13,24 @@ struct MovieDetailView: View {
     
     @Environment(\.animationDuration) private var animationDuration
     @State private var selectedSimilarMovie: Movie?
+    @State private var showingSimilarMovies = false
 
     var body: some View {
         VStack(spacing: .zero) {
             content
-            if showSimilarMovies {
+            if showingSimilarMovies {
                 similar
+                    .transition(.move(edge: .trailing))
             }
         }
         .padding(.bottom, 30)
         .sheet(item: $selectedSimilarMovie) { movie in
             similarMovieDetails(for: movie)
+        }
+        .onAppear {
+            withAnimation(.bouncy(duration: animationDuration)) {
+                showingSimilarMovies = showSimilarMovies
+            }
         }
     }
     
@@ -90,7 +97,6 @@ struct MovieDetailView: View {
                 selectedSimilarMovie = movie
             }
         }
-        .id(movie.id)
         .ignoresSafeArea()
     }
     
@@ -131,5 +137,6 @@ struct MovieDetailView: View {
 
 #Preview {
     MovieDetailView(movie: .sample)
+        .animationDuration(1)
         .preferredColorScheme(.dark)
 }
