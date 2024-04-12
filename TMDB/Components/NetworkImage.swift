@@ -4,8 +4,6 @@
 //
 //  Created by Sameer Mungole on 4/8/24.
 //
-//  Caching Images:
-//  https://grokkingswift.io/caching-strategies-for-ios-applications/
 
 import SwiftUI
 
