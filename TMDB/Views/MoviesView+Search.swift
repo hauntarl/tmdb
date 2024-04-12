@@ -83,11 +83,19 @@ extension MoviesView {
      Fetches search result movies from `Movies` aggregate model
      */
     func searchMovies(query: String) {
+        withAnimation(.bouncy(duration: animationDuration)) {
+            noSearchResults = false
+        }
+        
         Task {
             do {
                 let movies = try await Movies.search(query: query)
                 withAnimation(.bouncy(duration: animationDuration)) {
-                    searchResults = movies
+                    if movies.isEmpty {
+                        noSearchResults = true
+                    } else {
+                        searchResults = movies
+                    }
                 }
                 scrollTo(target: movies.first, delay: animationDuration * 0.51)
             } catch {

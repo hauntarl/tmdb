@@ -50,7 +50,7 @@ extension MoviesView {
     var titleView: some View {
         Text(title)
             .font(.custom(Font.jostLight, size: 40))
-            .shadow(color: .black, radius: 5)
+            .shadow(color: .black.opacity(0.5), radius: 5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .offset(x: 20, y: 75)
             .transition(.blurReplace)

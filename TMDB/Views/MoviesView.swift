@@ -31,7 +31,7 @@ struct MoviesView: View {
     @State var selectedMovie: Movie?
     
     @FocusState var searchFocus
-    @StateObject var searchText = Debouncer(initialValue: "", delay: 1)
+    @StateObject var searchText = Debouncer(initialValue: "", delay: 0.5)
     @State var searchResults = [Movie]()
     @State var noSearchResults = false
     @State var keyboardHeight: CGFloat = .zero
