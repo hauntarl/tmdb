@@ -27,11 +27,11 @@ struct MoviesView: View {
     @Environment(\.animationDuration) var animationDuration
     @State var favorites = [Movie]()
     @State var selectedCategory: CategoriesView.Category
-    @State var scrolledTo: Movie?
+    @StateObject var scrolledTo: Debouncer<Movie?> = .init(initialValue: nil, delay: 0.3)
     @State var selectedMovie: Movie?
     
     @FocusState var searchFocus
-    @State var searchText = ""
+    @StateObject var searchText = Debouncer(initialValue: "", delay: 1)
     @State var noSearchResults = false
     @State var keyboardHeight: CGFloat = .zero
 
@@ -71,13 +71,16 @@ struct MoviesView: View {
         .task {
             await fetchFavorites()
         }
+        .onAppear {
+            scrolledTo.input = movies.first
+        }
     }
     
     // MARK: Wheel Carousel
     func buildCarousel(size: CGSize) -> some View {
         WheelCarousel(
             items: movies,
-            scrolledTo: $scrolledTo,
+            scrolledTo: $scrolledTo.input,
             rotation: 10,
             offsetY: 20,
             horizontalInset: size.width / 4
@@ -138,16 +141,13 @@ struct MoviesView: View {
         guard let movie else {
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration / 2) {
-            withAnimation {
-                scrolledTo = movie
-            }
+        withAnimation {
+            scrolledTo.input = movie
         }
     }
 
     init(nowPlaying: [Movie]) {
         self.nowPlaying = nowPlaying
-        self._scrolledTo = .init(initialValue: nowPlaying.first)
         self._selectedCategory = .init(initialValue: categories.first!)
     }
 }

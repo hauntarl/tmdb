@@ -35,6 +35,7 @@
 		FCF879812BC840F000445933 /* SimilarMoviesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF879802BC840F000445933 /* SimilarMoviesView.swift */; };
 		FCF879832BC87B1600445933 /* MoviesView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF879822BC87B1600445933 /* MoviesView+Search.swift */; };
 		FCF879852BC8934000445933 /* KeyboardHeightListenerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF879842BC8933F00445933 /* KeyboardHeightListenerModifier.swift */; };
+		FCF879892BC9833600445933 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF879882BC9833600445933 /* Debouncer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		FCF879802BC840F000445933 /* SimilarMoviesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarMoviesView.swift; sourceTree = "<group>"; };
 		FCF879822BC87B1600445933 /* MoviesView+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Search.swift"; sourceTree = "<group>"; };
 		FCF879842BC8933F00445933 /* KeyboardHeightListenerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHeightListenerModifier.swift; sourceTree = "<group>"; };
+		FCF879882BC9833600445933 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				FC92EB782BC4436900B90E16 /* Movies.swift */,
 				FC92EB812BC469C700B90E16 /* Samples.swift */,
 				FC92EB972BC5B38F00B90E16 /* ImageCache.swift */,
+				FCF879882BC9833600445933 /* Debouncer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				FC92EB882BC49B6B00B90E16 /* MovieDetailView.swift in Sources */,
 				FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */,
 				FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */,
+				FCF879892BC9833600445933 /* Debouncer.swift in Sources */,
 				FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */,
 				FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */,
 				FC92EB822BC469C700B90E16 /* Samples.swift in Sources */,

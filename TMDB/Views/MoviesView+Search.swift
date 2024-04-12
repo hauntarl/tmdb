@@ -15,7 +15,7 @@ extension MoviesView {
                 .font(.system(size: 20))
                 .foregroundStyle(.logoTertiary)
             
-            TextField("Start typing here...", text: $searchText.animation())
+            TextField("Start typing here...", text: $searchText.input)
                 .font(.custom(Font.jostLight, size: 20))
                 .autocorrectionDisabled()
                 .focused($searchFocus)
@@ -44,11 +44,12 @@ extension MoviesView {
         .offset(y: -keyboardHeight * 0.2)
         .contentTransition(.interpolate)
         .transition(.opacity)
+        .animation(.bouncy(duration: animationDuration), value: searchText.output)
     }
     
     var contentUnavailableTitle: String {
         if selectedCategory.name == .search {
-            if searchText.isEmpty {
+            if searchText.output.isEmpty {
                 return "Find movies..."
             } else if !noSearchResults {
                 return "Searching database..."
@@ -58,6 +59,7 @@ extension MoviesView {
     }
     
     var contentUnavailableDescription: LocalizedStringKey {
+        let searchText = searchText.output
         switch selectedCategory.name {
         case .movies:
             return "**[\(selectedCategory.name.rawValue)](nowPlaying)** not available at the moment. Please try again later."
