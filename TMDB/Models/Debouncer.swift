@@ -4,6 +4,8 @@
 //
 //  Created by Sameer Mungole on 4/12/24.
 //
+//  Code snippet for Debouncer is inspired from Pro SwiftUI book authored by
+//  Paul Hudson.
 
 import Combine
 import SwiftUI

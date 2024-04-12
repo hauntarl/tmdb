@@ -4,7 +4,7 @@
 //
 //  Created by Sameer Mungole on 4/10/24.
 //
-//  Code snippet for CofettiModifier is inspired from ProSwiftUI book authored by
+//  Code snippet for CofettiModifier is inspired from Pro SwiftUI book authored by
 //  Paul Hudson.
 
 import SwiftUI
