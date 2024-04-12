@@ -54,10 +54,8 @@ extension MoviesView {
             .shadow(color: .black, radius: 5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .offset(x: 20, y: 75)
-            .id(title)
             .transition(.blurReplace)
     }
-    
     
     var hideDetailsButton: some View {
         Button {
@@ -89,7 +87,7 @@ extension MoviesView {
     func updatePosterMovie(scrolledID: Int?) {
         withAnimation(.bouncy(duration: animationDuration)) {
             if let scrolledID {
-                posterMovie = nowPlaying.first { $0.id == scrolledID }
+                posterMovie = movies.first { $0.id == scrolledID }
             } else {
                 posterMovie = nil
             }

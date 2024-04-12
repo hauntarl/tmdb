@@ -22,26 +22,26 @@ extension MoviesView {
                 movie: selectedMovie,
                 availableHeight: height,
                 categories: categories,
-                selection: $selectedCategory.animation(.bouncy(duration: animationDuration))
+                selection: $selectedCategory
             )
-            .onChange(of: selectedCategory) {
-                withAnimation(.bouncy(duration: animationDuration)) {
-                    switch selectedCategory.name {
-                    case .movies:
-                        movies = nowPlaying
-                    case .favorites:
-                        movies = favorites.values.sorted { $0.title < $1.title }
-                    case .search:
-                        movies = []
-                        break
-                    }
-                    
-                    scrolledID = movies.first?.id
-                    posterMovie = movies.first
-                }
-            }
-
             .zIndex(1)
+        }
+    }
+    
+    func updateMovies(category: BottomModalSheet.Category) {
+        withAnimation(.bouncy(duration: animationDuration)) {
+            switch category.name {
+            case .movies:
+                movies = nowPlaying
+            case .favorites:
+                movies = favorites.values.sorted { $0.title < $1.title }
+            case .search:
+                movies = []
+                searchText.removeAll()
+            }
+            
+            scrolledID = movies.first?.id
+//                    posterMovie = movies.first
         }
     }
     
@@ -95,7 +95,7 @@ extension MoviesView {
                 movies.remove(at: index)
                 withAnimation(.bouncy(duration: animationDuration)) {
                     let nextIndex = index < movies.endIndex ? index : movies.endIndex - 1
-                    updateCarouselState(using: nextIndex > -1 ? movies[nextIndex].id : nil, showingCarousel: true)
+                    updateCarousel(using: nextIndex > -1 ? movies[nextIndex].id : nil, carouselHighlighted: true)
                     selectedMovie = nil
                 }
             }

@@ -71,7 +71,9 @@ struct BottomModalSheet: View {
                     [CategoryPreference(category: category, anchor: anchor)]
                 }
                 .onTapGesture {
-                    selection = category
+                    withAnimation(.bouncy(duration: animationDuration)) {
+                        selection = category
+                    }
                 }
             }
         }
@@ -114,7 +116,6 @@ struct BottomModalSheet: View {
                         availableHeight: proxy.size.height,
                         categories: categories,
                         selection: $selectedCategory
-                            .animation(.bouncy(duration: animationDuration))
                     )
                 }
             }
