@@ -28,7 +28,8 @@ struct BottomModalSheet: View {
     let movie: Movie?
     let availableHeight: Double
     let categories: [Category]
-    @Binding var selection: Category
+    let selection: Category
+    let onTap: (Category) -> Void
 
     var body: some View {
         VStack {
@@ -71,9 +72,7 @@ struct BottomModalSheet: View {
                     [CategoryPreference(category: category, anchor: anchor)]
                 }
                 .onTapGesture {
-                    withAnimation(.bouncy(duration: animationDuration)) {
-                        selection = category
-                    }
+                    onTap(category)
                 }
             }
         }
@@ -115,8 +114,12 @@ struct BottomModalSheet: View {
                         movie: selectedMovie,
                         availableHeight: proxy.size.height,
                         categories: categories,
-                        selection: $selectedCategory
-                    )
+                        selection: selectedCategory
+                    ) { category in
+                        withAnimation(.bouncy(duration: animationDuration)) {
+                            selectedCategory = category
+                        }
+                    }
                 }
             }
             .ignoresSafeArea(edges: .bottom)

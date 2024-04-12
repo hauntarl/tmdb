@@ -22,62 +22,27 @@ extension MoviesView {
                 movie: selectedMovie,
                 availableHeight: height,
                 categories: categories,
-                selection: $selectedCategory
-            )
+                selection: selectedCategory
+            ) { category in
+                withAnimation(.bouncy(duration: animationDuration)) {
+                    selectedCategory = category
+                    updateScrollTarget(movie: movies.first)
+                }
+            }
             .zIndex(1)
         }
     }
     
-    func updateMovies(category: BottomModalSheet.Category) {
-        withAnimation(.bouncy(duration: animationDuration)) {
-            switch category.name {
-            case .movies:
-                movies = nowPlaying
-            case .favorites:
-                movies = favorites.values.sorted { $0.title < $1.title }
-            case .search:
-                movies = []
-                searchText.removeAll()
-            }
-            
-            scrolledID = movies.first?.id
-//                    posterMovie = movies.first
-        }
-    }
-    
     var favoriteButton: some View {
-        HStack {
+        let isFavorite = favorites.contains(where: { $0 == selectedMovie })
+        
+        return HStack {
             Spacer()
-            FavoriteButton(
-                isFavorite: favorites[selectedMovie?.id ?? .zero] != nil,
-                size: 30,
-                action: favoriteButtonAction
-            )
-            .foregroundStyle(.primary)
-            .padding(10)
-            .background(favoriteButtonBackground)
-            .offset(x: -30, y: 30)
+            FavoriteButton(isFavorite: isFavorite, size: 30, action: favoriteButtonAction)
+                .foregroundStyle(.primary)
+                .offset(x: -30, y: 30)
         }
         .id(selectedMovie?.id)
-        .animation(.bouncy(duration: animationDuration), value: favorites[selectedMovie?.id ?? .zero])
-    }
-    
-    var favoriteButtonBackground: some View {
-        Circle()
-            .foregroundStyle(.ultraThinMaterial)
-            .overlay {
-                Circle()
-                    .stroke(lineWidth: 2)
-                    .foregroundStyle(
-                        .linearGradient(
-                            colors: favorites[selectedMovie?.id ?? .zero] != nil
-                            ? [.logoSecondary, .logoTertiary]
-                            : [.primary],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-            }
     }
     
     func favoriteButtonAction(_ isFavorite: Bool) {
@@ -85,18 +50,22 @@ extension MoviesView {
             return
         }
         
-        if isFavorite {
-            // Add the selected movie to favorites
-            favorites[movie.id] = movie
-        } else {
-            // Remove selected movie from favorites
-            favorites.removeValue(forKey: movie.id)
-            if selectedCategory.name == .favorites, let index = movies.firstIndex(of: movie) {
-                movies.remove(at: index)
-                withAnimation(.bouncy(duration: animationDuration)) {
-                    let nextIndex = index < movies.endIndex ? index : movies.endIndex - 1
-                    updateCarousel(using: nextIndex > -1 ? movies[nextIndex].id : nil, carouselHighlighted: true)
-                    selectedMovie = nil
+        withAnimation(.bouncy(duration: animationDuration)) {
+            if isFavorite {
+                // Add the selected movie to favorites
+                favorites.insert(movie, at: .zero)
+            } else {
+                // Remove selected movie from favorites
+                if let index = favorites.firstIndex(where: { $0 == movie }) {
+                    favorites.remove(at: index)
+                    if selectedCategory.name == .favorites {
+                        updateScrollTarget(
+                            movie: index == favorites.endIndex
+                            ? favorites.last
+                            : favorites[index]
+                        )
+                        selectedMovie = nil
+                    }
                 }
             }
         }
@@ -104,7 +73,7 @@ extension MoviesView {
         // Update persisting favorites data in background
         Task(priority: .background) {
             do {
-                try Movies.save(favorites: Array(favorites.values))
+                try Movies.save(favorites: favorites)
             } catch {
                 print("Failed to save favorites: \(error.localizedDescription)")
             }

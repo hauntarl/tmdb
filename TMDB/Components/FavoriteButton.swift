@@ -52,6 +52,25 @@ struct FavoriteButton: View {
             }
         }
         .font(.system(size: size))
+        .padding(size / 3)
+        .background(background)
+        .animation(.bouncy(duration: animationDuration), value: isFavorite)
+    }
+    
+    var background: some View {
+        Circle()
+            .foregroundStyle(.ultraThinMaterial)
+            .overlay {
+                Circle()
+                    .stroke(lineWidth: 2)
+                    .foregroundStyle(
+                        .linearGradient(
+                            colors: isFavorite ? [.logoSecondary, .logoTertiary] : [.primary],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+            }
     }
     
     init(
@@ -184,5 +203,7 @@ struct ConfettiModifier<T: ShapeStyle>: ViewModifier {
     FavoriteButton(size: 60) {
         print("isFavorite? \($0)")
     }
+    .foregroundStyle(.primary)
     .animationDuration(1)
+    .preferredColorScheme(.dark)
 }

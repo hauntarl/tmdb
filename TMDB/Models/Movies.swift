@@ -32,12 +32,10 @@ struct Movies: Decodable, Equatable {
     }}
     
     // Factory method that fetches favorite movies from the app's documents directory
-    static var favorites: [Int: Movie] { get async throws {
+    static var favorites: [Movie] { get async throws {
         let movies: [Movie] = try NetworkService.shared.loadData(from: "favorites.json")
         await ImageCache.shared.loadImages(from: movies.map({ $0.posterURL }))
         return movies
-            .map { ($0.id, $0) }
-            .reduce(into: [:]) { $0[$1.0] = $1.1 }
     }}
     
     // Factory method that saves the list of favorite movies into app's documents directory
@@ -72,7 +70,7 @@ struct Movies: Decodable, Equatable {
  It utilizes a custom decoding strategy in order to transform api response into fields
  that can be directly consumed by the views.
  */
-struct Movie: Codable, Identifiable, Equatable {
+struct Movie: Codable, Identifiable, Equatable, Hashable {
     let id: Int
     let title: String
     let overview: String

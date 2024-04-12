@@ -11,7 +11,7 @@ extension MoviesView {
     // MARK: Search Category
     var searchBar: some View {
         HStack {
-            Image(systemName: BottomModalSheet.CategoryName.search.rawValue)
+            Image(systemName: "magnifyingglass")
                 .font(.system(size: 20))
                 .foregroundStyle(.logoTertiary)
             
@@ -58,7 +58,7 @@ extension MoviesView {
             if searchText.isEmpty {
                 return "Find movies..."
             } else if !noSearchResults {
-                return "Searching TheMovieDB..."
+                return "Searching database..."
             }
         }
         return "Nothing to see here ツ"

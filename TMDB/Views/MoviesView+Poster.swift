@@ -10,8 +10,8 @@ import SwiftUI
 // MARK: Poster
 extension MoviesView {
     @ViewBuilder
-    func buildPoster(for movie: Movie, size: CGSize) -> some View {
-        NetworkImage(url: movie.posterURL) { image in
+    func buildPoster(of size: CGSize) -> some View {
+        NetworkImage(url: scrolledTo?.posterURL) { image in
             image
                 .resizable()
                 .scaledToFit()
@@ -27,14 +27,13 @@ extension MoviesView {
         .clipped()
         .overlay {
             LinearGradient(
-                colors: selectedMovie == .none ? [.logoPrimary, .clear] : [],
+                colors: selectedMovie == .none ? [.black, .clear] : [],
                 startPoint: .bottom,
                 endPoint: .top
             )
         }
-        .id(movie.id)
-        .contentTransition(.interpolate)
-        .transition(.opacity)
+        .id(scrolledTo)
+        .animation(.bouncy(duration: animationDuration), value: scrolledTo)
     }
     
     var posterPlaceholder: some View {
@@ -59,7 +58,7 @@ extension MoviesView {
     
     var hideDetailsButton: some View {
         Button {
-            select(movie: nil)
+            showDetails(for: nil)
         } label: {
             Image(systemName: "arrow.left")
                 .resizable()
@@ -82,15 +81,5 @@ extension MoviesView {
             return "Now playing"
         }
         return selectedCategory.name.rawValue
-    }
-    
-    func updatePosterMovie(scrolledID: Int?) {
-        withAnimation(.bouncy(duration: animationDuration)) {
-            if let scrolledID {
-                posterMovie = movies.first { $0.id == scrolledID }
-            } else {
-                posterMovie = nil
-            }
-        }
     }
 }
