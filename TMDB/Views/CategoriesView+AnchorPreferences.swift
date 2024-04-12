@@ -1,5 +1,5 @@
 //
-//  BottomModalSheet+AnchorPreferences.swift
+//  CategoriesView+AnchorPreferences.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/9/24.
@@ -11,7 +11,7 @@ import SwiftUI
  This extension deals with all the calculations related to displaying a radial gradient
  for the currently selected category.
  */
-extension BottomModalSheet {
+extension CategoriesView {
     func bottomModalSheetOverlay(from preferences: [CategoryPreference]) -> some View {
         movie == .none
         ? GeometryReader { proxy in
@@ -29,7 +29,8 @@ extension BottomModalSheet {
                 .position(x: frame.midX, y: frame.midY)
             }
         }
-        .allowsHitTesting(false) // Disable hit testing of the overlay for icons to capture the on tap gesture
+        // Disable hit testing of the overlay for icons to capture the on tap gesture
+        .allowsHitTesting(false)
         : nil
     }
     

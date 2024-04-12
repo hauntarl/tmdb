@@ -1,5 +1,5 @@
 //
-//  MoviesView+SearchCategory.swift
+//  MoviesView+Search.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/11/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension MoviesView {
-    // MARK: Search Category
+    // MARK: Search
     var searchBar: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -38,14 +38,7 @@ extension MoviesView {
             image: "Logo",
             description: Text(contentUnavailableDescription)
         )
-        .background {
-            Image("Placeholder")
-                .resizable()
-                .scaledToFit()
-                .scaleEffect(1.5)
-                .blur(radius: 20)
-                .opacity(0.3)
-        }
+        .background(.thinMaterial)
         .frame(width: size.width, height: size.height, alignment: .top)
         .clipped()
         .offset(y: -keyboardHeight * 0.2)

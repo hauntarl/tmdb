@@ -16,7 +16,7 @@ import SwiftUI
     - nowPlaying: By default `MoviesView` displays now playing movies
  */
 struct MoviesView: View {
-    let categories: [BottomModalSheet.Category] = [
+    let categories: [CategoriesView.Category] = [
         .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
         .init(name: .favorites, icon: "heart", highlightedIcon: "heart.fill"),
         .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
@@ -26,7 +26,7 @@ struct MoviesView: View {
 
     @Environment(\.animationDuration) var animationDuration
     @State var favorites = [Movie]()
-    @State var selectedCategory: BottomModalSheet.Category
+    @State var selectedCategory: CategoriesView.Category
     @State var scrolledTo: Movie?
     @State var selectedMovie: Movie?
     
@@ -135,6 +135,9 @@ struct MoviesView: View {
     }
     
     func updateScrollTarget(movie: Movie?) {
+        guard let movie else {
+            return
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration / 2) {
             withAnimation {
                 scrolledTo = movie

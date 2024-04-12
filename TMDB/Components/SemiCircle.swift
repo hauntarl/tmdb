@@ -8,7 +8,7 @@
 import SwiftUI
 
 /**
- Animatable semi-circle shape that is used as clip shape for `BottomModalSheet`
+ Animatable semi-circle shape that is used as clip shape for `CategoriesView`
  
  - Parameters:
     - radius: Controls the curve of this semi-circle

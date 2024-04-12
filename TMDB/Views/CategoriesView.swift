@@ -1,5 +1,5 @@
 //
-//  BottomModalSheet.swift
+//  CategoriesView.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/9/24.
@@ -11,17 +11,18 @@ import SwiftUI
  A custom `TabView` implementation.
  
  - Parameters:
-    - movie: If present, the `BottomModalSheet` behaves as a movie detail view
+    - movie: If present, the `CategoriesView` behaves as a movie detail view
     - availableHeight: Used to calculate sheet height relative to this parameter
     - categories: All the categories that the user can browse through
     - selection: A value that represents user's currently selected category
+    - onTap: This callback receives the selected category as input
  
- `BottomModalSheet` serves two purposes:
+ `CategoriesView` serves two purposes:
  - In contracted mode, it acts as a tab bar that lets user browse through different app
    categories
  - In expanded mode, it display the movie details for user selected movie
  */
-struct BottomModalSheet: View {
+struct CategoriesView: View {
     private let transition: AnyTransition = .move(edge: .bottom).combined(with: .opacity)
     
     @Environment(\.animationDuration) var animationDuration
@@ -80,8 +81,8 @@ struct BottomModalSheet: View {
 }
 
 #Preview {
-    struct BottomModalSheetPreview: View {
-        private let categories: [BottomModalSheet.Category] = [
+    struct CategoriesPreview: View {
+        private let categories: [CategoriesView.Category] = [
             .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
             .init(name: .favorites, icon: "heart", highlightedIcon: "heart.fill"),
             .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
@@ -89,7 +90,7 @@ struct BottomModalSheet: View {
 
         @Environment(\.animationDuration) var animationDuration
         @State private var selectedMovie: Movie?
-        @State private var selectedCategory: BottomModalSheet.Category
+        @State private var selectedCategory: CategoriesView.Category
         
         var body: some View {
             GeometryReader { proxy in
@@ -110,7 +111,7 @@ struct BottomModalSheet: View {
                     
                     Spacer()
                     
-                    BottomModalSheet(
+                    CategoriesView(
                         movie: selectedMovie,
                         availableHeight: proxy.size.height,
                         categories: categories,
@@ -136,7 +137,7 @@ struct BottomModalSheet: View {
         }
     }
     
-    return BottomModalSheetPreview()
+    return CategoriesPreview()
         .animationDuration(1)
         .ignoresSafeArea(edges: .bottom)
         .preferredColorScheme(.dark)

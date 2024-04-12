@@ -1,5 +1,5 @@
 //
-//  MoviesView+BottomModalSheet.swift
+//  MoviesView+Categories.swift
 //  TMDB
 //
 //  Created by Sameer Mungole on 4/10/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: BottomModalSheet
+// MARK: Categories
 extension MoviesView {
     func buildBottomSheet(height: Double) -> some View {
         VStack {
@@ -18,7 +18,7 @@ extension MoviesView {
                     .zIndex(2)
             }
             
-            BottomModalSheet(
+            CategoriesView(
                 movie: selectedMovie,
                 availableHeight: height,
                 categories: categories,
