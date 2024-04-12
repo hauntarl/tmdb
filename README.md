@@ -2,7 +2,7 @@
 
 A concept movie database app developed using SwiftUI, utilizing [themoviedb](https://developer.themoviedb.org/docs/getting-started) APIs.
 
-Design inspiration from *Purrweb UI/UX Agency* at [dribbble](https://dribbble.com/shots/17158465-Movie-App).
+Design inspired by [dribbble](https://dribbble.com/shots/17158465-Movie-App).
 
 - Developed by: [Sameer Mungole](https://www.linkedin.com/in/sameer-mungole/)
 - Using XCode Version **15.3 (15E204a)**
