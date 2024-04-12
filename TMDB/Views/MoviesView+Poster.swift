@@ -11,7 +11,7 @@ import SwiftUI
 extension MoviesView {
     @ViewBuilder
     func buildPoster(of size: CGSize) -> some View {
-        NetworkImage(url: scrolledTo.output?.posterURL) { image in
+        NetworkImage(url: scrolledTo?.posterURL) { image in
             image
                 .resizable()
                 .scaledToFit()
@@ -32,8 +32,8 @@ extension MoviesView {
                 endPoint: .top
             )
         }
-        .id(scrolledTo.output)
-        .animation(.bouncy(duration: animationDuration), value: scrolledTo.output)
+        .id(scrolledTo)
+        .animation(.bouncy(duration: animationDuration), value: scrolledTo)
     }
     
     var posterPlaceholder: some View {

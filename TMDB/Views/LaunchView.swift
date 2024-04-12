@@ -42,9 +42,11 @@ struct LaunchView: View {
     var body: some View {
         if nowPlaying.isEmpty {
             loadingView
+                .zIndex(2)
+                .transition(.move(edge: .leading))
         } else {
             MoviesView(nowPlaying: nowPlaying)
-                .transition(.move(edge: .trailing))
+                .zIndex(1)
         }
     }
     
@@ -63,7 +65,6 @@ struct LaunchView: View {
                 .scaleEffect(scale)
         }
         .ignoresSafeArea()
-        .transition(.move(edge: .leading))
         .onReceive(timer) { _ in performAnimation() }
         .onAppear(perform: performAnimation)
         .task { await fetchMovies() }

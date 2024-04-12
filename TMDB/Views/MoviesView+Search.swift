@@ -29,6 +29,9 @@ extension MoviesView {
         .padding()
         .offset(y: 125)
         .transition(.move(edge: .trailing))
+        .onChange(of: searchText.output) { _, newValue in
+            searchMovies(query: newValue)
+        }
     }
     
     // MARK: Content unavailable view
@@ -72,6 +75,23 @@ extension MoviesView {
                 return "Couldn't find any movies for\n**[\(searchText)](\(searchText))**."
             } else {
                 return "For movies matching **[\(searchText)](\(searchText))**"
+            }
+        }
+    }
+    
+    /**
+     Fetches search result movies from `Movies` aggregate model
+     */
+    func searchMovies(query: String) {
+        Task {
+            do {
+                let movies = try await Movies.search(query: query)
+                withAnimation(.bouncy(duration: animationDuration)) {
+                    searchResults = movies
+                }
+                scrollTo(target: movies.first, delay: animationDuration * 0.51)
+            } catch {
+                print("Error occurred while searching: \(error.localizedDescription)")
             }
         }
     }

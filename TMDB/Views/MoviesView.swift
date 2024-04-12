@@ -27,17 +27,21 @@ struct MoviesView: View {
     @Environment(\.animationDuration) var animationDuration
     @State var favorites = [Movie]()
     @State var selectedCategory: CategoriesView.Category
-    @StateObject var scrolledTo: Debouncer<Movie?> = .init(initialValue: nil, delay: 0.3)
+    @State var scrolledTo: Movie?
     @State var selectedMovie: Movie?
     
     @FocusState var searchFocus
     @StateObject var searchText = Debouncer(initialValue: "", delay: 1)
+    @State var searchResults = [Movie]()
     @State var noSearchResults = false
     @State var keyboardHeight: CGFloat = .zero
 
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
+                Rectangle()
+                    .foregroundStyle(.regularMaterial)
+                
                 buildCarousel(size: proxy.size)
                     .zIndex(1)
                 
@@ -72,7 +76,7 @@ struct MoviesView: View {
             await fetchFavorites()
         }
         .onAppear {
-            scrolledTo.input = movies.first
+            scrolledTo = movies.first
         }
     }
     
@@ -80,7 +84,7 @@ struct MoviesView: View {
     func buildCarousel(size: CGSize) -> some View {
         WheelCarousel(
             items: movies,
-            scrolledTo: $scrolledTo.input,
+            scrolledTo: $scrolledTo,
             rotation: 10,
             offsetY: 20,
             horizontalInset: size.width / 4
@@ -127,7 +131,7 @@ struct MoviesView: View {
         case .favorites:
             return favorites
         case .search:
-            return []
+            return searchResults
         }
     }
     
@@ -135,14 +139,16 @@ struct MoviesView: View {
         withAnimation(.bouncy(duration: animationDuration)) {
             selectedMovie = movie
         }
+        scrollTo(target: movie, delay: animationDuration * 0.51)
     }
     
-    func updateScrollTarget(movie: Movie?) {
-        guard let movie else {
-            return
-        }
-        withAnimation {
-            scrolledTo.input = movie
+    func scrollTo(target: Movie?, delay: TimeInterval) {
+        if let target {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.bouncy(duration: animationDuration)) {
+                    scrolledTo = target
+                }
+            }
         }
     }
 

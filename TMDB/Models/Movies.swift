@@ -83,6 +83,10 @@ struct Movie: Codable, Identifiable, Equatable, Hashable {
         lhs.id == rhs.id
     }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     // Method fetches similar movies from the current movie id
     var similar: [Self] { get async throws {
         let url = try NetworkService.buildURL(

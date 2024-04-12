@@ -24,10 +24,10 @@ extension MoviesView {
                 categories: categories,
                 selection: selectedCategory
             ) { category in
-                withAnimation(.bouncy(duration: animationDuration)) {
+                withAnimation(.bouncy(duration: animationDuration / 2)) {
                     selectedCategory = category
-                    updateScrollTarget(movie: movies.first)
                 }
+                scrollTo(target: movies.first, delay: animationDuration * 0.51)
             }
             .zIndex(1)
         }
@@ -50,7 +50,6 @@ extension MoviesView {
             return
         }
         
-        withAnimation(.bouncy(duration: animationDuration)) {
             if isFavorite {
                 // Add the selected movie to favorites
                 favorites.insert(movie, at: .zero)
@@ -59,16 +58,16 @@ extension MoviesView {
                 if let index = favorites.firstIndex(where: { $0 == movie }) {
                     favorites.remove(at: index)
                     if selectedCategory.name == .favorites {
-                        updateScrollTarget(
-                            movie: index == favorites.endIndex
+                        showDetails(for: nil)
+                        scrollTo(
+                            target: index == favorites.endIndex
                             ? favorites.last
-                            : favorites[index]
+                            : favorites[index],
+                            delay: animationDuration * 0.51
                         )
-                        selectedMovie = nil
                     }
                 }
             }
-        }
         
         // Update persisting favorites data in background
         Task(priority: .background) {
