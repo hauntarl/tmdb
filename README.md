@@ -4,6 +4,10 @@ A concept movie database app developed using SwiftUI, utilizing [themoviedb](htt
 
 Design inspired by [dribbble](https://dribbble.com/shots/17158465-Movie-App).
 
+<img src="https://github.com/hauntarl/hauntarl/blob/master/tmdb/tmdb-1.gif" width="200"> <img src="https://github.com/hauntarl/hauntarl/blob/master/tmdb/tmdb-2.gif" width="200">
+
+## About
+
 - Developed by: [Sameer Mungole](https://www.linkedin.com/in/sameer-mungole/)
 - Using XCode Version **15.3 (15E204a)**
 - Minimum deployment: **iOS 17.4**
