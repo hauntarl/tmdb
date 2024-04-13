@@ -77,7 +77,7 @@ struct LaunchView: View {
     private func fetchMovies() async {
         do {
             let movies = try await Movies.nowPlaying
-            withAnimation(.bouncy(duration: animationDuration).delay(3)) {
+            withAnimation(.bouncy(duration: animationDuration).delay(animationDuration)) {
                 nowPlaying = movies
             }
         } catch {
