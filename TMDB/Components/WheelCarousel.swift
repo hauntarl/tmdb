@@ -50,21 +50,6 @@ struct WheelCarousel<Item: Equatable & Hashable, Content: View>: View {
         .safeAreaPadding(.horizontal, horizontalInset)
     }
     
-    func scrollButton(systemImage: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: systemImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 16, height: 16)
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .background {
-            Capsule()
-                .foregroundStyle(.regularMaterial)
-        }
-    }
-    
     init(
         items: [Item],
         scrolledTo: Binding<Item?>,
