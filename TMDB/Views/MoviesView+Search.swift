@@ -16,7 +16,7 @@ extension MoviesView {
                 .foregroundStyle(.logoTertiary)
             
             TextField("Start typing here...", text: $searchText.input)
-                .font(.custom(Font.jostLight, size: 20))
+                .font(.jostLight(size: 20))
                 .autocorrectionDisabled()
                 .focused($searchFocus)
         }
@@ -32,6 +32,7 @@ extension MoviesView {
         .onChange(of: searchText.output) { _, newValue in
             searchMovies(query: newValue)
         }
+        .onChange(of: searchResults, updateScrollTarget)
     }
     
     // MARK: Content unavailable view
@@ -97,7 +98,11 @@ extension MoviesView {
                         searchResults = movies
                     }
                 }
-                scrollTo(target: movies.first, delay: animationDuration * 0.51)
+
+                // Update poster when search results are non-empty
+                if !movies.isEmpty {
+                    posterURL = searchResults.first?.posterURL
+                }
             } catch {
                 print("Error occurred while searching: \(error.localizedDescription)")
             }

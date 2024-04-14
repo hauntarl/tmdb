@@ -12,18 +12,6 @@ struct NetworkService {
     static let shared = Self()
     static let baseURL = URL(string: "https://api.themoviedb.org/3")!
     static let imageBaseURL = URL(string: "https://image.tmdb.org/t/p/w500")!
-    
-    static func buildURL(
-        for path: String,
-        relativeTo baseURL: URL,
-        queryItems: [URLQueryItem] = []
-    ) throws -> URL {
-        var url = baseURL.appendingPathComponent(path, conformingTo: .url)
-        url.append(queryItems: queryItems)
-        url.append(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
-        return url
-    }
-
     /**
      Loads [themoviedb.org](https://developer.themoviedb.org/docs/getting-started) API key from `Secrets.yml` file
      
@@ -37,6 +25,13 @@ struct NetworkService {
         let contents = try! String(contentsOf: url)
         return contents.split(separator: ":").last!.trimmingCharacters(in: .whitespacesAndNewlines)
     }()
+    
+    static func buildURL(for path: String, relativeTo baseURL: URL, queryItems: [URLQueryItem] = []) throws -> URL {
+        var url = baseURL.appendingPathComponent(path, conformingTo: .url)
+        url.append(queryItems: queryItems)
+        url.append(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
+        return url
+    }
     
     private let networking: Networking
     private let decoder: JSONDecoder

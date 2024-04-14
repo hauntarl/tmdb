@@ -48,7 +48,7 @@ struct MovieDetailView: View {
             Spacer().frame(height: 20)
             
             Text(movie.overview)
-                .font(.custom(Font.jostLight, size: 18))
+                .font(.jostLight(size: 18))
                 .foregroundStyle(.primary.opacity(0.8))
                 .lineLimit(8)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +57,7 @@ struct MovieDetailView: View {
                 Spacer().frame(height: 40)
                 
                 Text("More like this")
-                    .font(.custom(Font.jostMedium, size: 18))
+                    .font(.jostMedium(size: 18))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Spacer().frame(height: 20)
@@ -69,9 +69,9 @@ struct MovieDetailView: View {
     var title: some View {
         (
             Text(movie.title)
-                .font(.custom(Font.jostMedium, size: 26))
+                .font(.jostMedium(size: 26))
             + Text(year)
-                .font(.custom(Font.jostMedium, size: 16))
+                .font(.jostMedium(size: 16))
                 .foregroundStyle(.secondary)
         )
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -80,20 +80,20 @@ struct MovieDetailView: View {
     var subtitle: some View {
         (
             Text(rating)
-                .font(.custom(Font.jostMedium, size: 18))
+                .font(.jostMedium(size: 18))
             + Text(" / 10")
-                .font(.custom(Font.jostMedium, size: 16))
+                .font(.jostMedium(size: 16))
                 .foregroundStyle(.secondary)
             + Text("  ★")
-                .font(.custom(Font.jostMedium, size: 16))
+                .font(.jostMedium(size: 16))
                 .foregroundStyle(.yellow)
             + Text("  |  ")
-                .font(.custom(Font.jostLight, size: 24))
+                .font(.jostLight(size: 24))
             + Text(String(format: "%.1f", movie.popularity))
-                .font(.custom(Font.jostMedium, size: 16))
+                .font(.jostMedium(size: 16))
                 .foregroundStyle(.secondary)
             + Text("  🍿")
-                .font(.custom(Font.jostMedium, size: 14))
+                .font(.jostMedium(size: 14))
         )
         .frame(maxWidth: .infinity, alignment: .leading)
     }

@@ -15,7 +15,7 @@ import SwiftUI
  `NSCache` primarily stores data in memory, meaning the data in NSCache is not saved to
  disk. If your app terminates, the cache is cleared.
  */
-class ImageCache {
+final class ImageCache {
     private var cache: NSCache<NSString, UIImage> = NSCache()
     
     static let shared = ImageCache()

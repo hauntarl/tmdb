@@ -16,7 +16,7 @@ import SwiftUI
     - nowPlaying: By default `MoviesView` displays now playing movies
  */
 struct MoviesView: View {
-    let categories: [CategoriesView.Category] = [
+    static let categories: [CategoriesView.Category] = [
         .init(name: .movies, icon: "house", highlightedIcon: "house.fill"),
         .init(name: .favorites, icon: "heart", highlightedIcon: "heart.fill"),
         .init(name: .search, icon: "magnifyingglass", highlightedIcon: "sparkle.magnifyingglass")
@@ -26,12 +26,13 @@ struct MoviesView: View {
 
     @Environment(\.animationDuration) var animationDuration
     @State var favorites = [Movie]()
-    @State var selectedCategory: CategoriesView.Category
+    @State var selectedCategory: CategoriesView.Category = Self.categories.first!
     @State var scrolledTo: Movie?
+    @State var posterURL: URL?
     @State var selectedMovie: Movie?
     
     @FocusState var searchFocus
-    @StateObject var searchText = Debouncer(initialValue: "", delay: 0.5)
+    @StateObject var searchText = Debouncer(initialValue: "", delay: 0.3)
     @State var searchResults = [Movie]()
     @State var noSearchResults = false
     @State var keyboardHeight: CGFloat = .zero
@@ -72,11 +73,11 @@ struct MoviesView: View {
             value: $keyboardHeight.animation(.bouncy(duration: animationDuration))
         )
         .ignoresSafeArea()
+        .onAppear {
+            posterURL = nowPlaying.first?.posterURL
+        }
         .task {
             await fetchFavorites()
-        }
-        .onAppear {
-            scrolledTo = movies.first
         }
     }
     
@@ -111,6 +112,9 @@ struct MoviesView: View {
         .background {
             buildPoster(of: size)
         }
+        .onChange(of: selectedCategory) {
+            updateScrollTarget(oldMovies: movies(for: $0), newMovies: movies(for: $1))
+        }
     }
     
     var carouselPlaceholder: some View {
@@ -125,7 +129,11 @@ struct MoviesView: View {
     }
     
     var movies: [Movie] {
-        switch selectedCategory.name {
+        movies(for: selectedCategory)
+    }
+    
+    func movies(for category: CategoriesView.Category) -> [Movie] {
+        switch category.name {
         case .movies:
             return nowPlaying
         case .favorites:
@@ -135,26 +143,27 @@ struct MoviesView: View {
         }
     }
     
-    func showDetails(for movie: Movie?) {
-        withAnimation(.bouncy(duration: animationDuration)) {
-            selectedMovie = movie
+    func updateScrollTarget(oldMovies: [Movie], newMovies: [Movie]) {
+        guard scrolledTo != nil else {
+            return
         }
-        scrollTo(target: movie, delay: animationDuration * 0.51)
+        
+        if scrolledTo == oldMovies.first {
+            scrolledTo = nil
+        } else if scrolledTo == newMovies.first {
+            scrolledTo = nil
+            scrollTo(movie: newMovies.first)
+        } else {
+            scrollTo(movie: newMovies.first)
+        }
     }
     
-    func scrollTo(target: Movie?, delay: TimeInterval) {
-        if let target {
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                withAnimation(.bouncy(duration: animationDuration)) {
-                    scrolledTo = target
-                }
+    func scrollTo(movie: Movie?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.bouncy(duration: animationDuration)) {
+                scrolledTo = movie
             }
         }
-    }
-
-    init(nowPlaying: [Movie]) {
-        self.nowPlaying = nowPlaying
-        self._selectedCategory = .init(initialValue: categories.first!)
     }
 }
 

@@ -19,17 +19,18 @@ extension MoviesView {
             }
             
             CategoriesView(
+                selection: $selectedCategory.animation(.bouncy(duration: 0.5)),
                 movie: selectedMovie,
                 availableHeight: height,
-                categories: categories,
-                selection: selectedCategory
-            ) { category in
-                withAnimation(.bouncy(duration: animationDuration / 2)) {
-                    selectedCategory = category
-                }
-                scrollTo(target: movies.first, delay: animationDuration * 0.51)
-            }
+                categories: Self.categories
+            )
             .zIndex(1)
+        }
+    }
+    
+    func showDetails(for movie: Movie?) {
+        withAnimation(.bouncy(duration: animationDuration)) {
+            selectedMovie = movie
         }
     }
     
@@ -50,24 +51,25 @@ extension MoviesView {
             return
         }
         
-            if isFavorite {
-                // Add the selected movie to favorites
-                favorites.insert(movie, at: .zero)
-            } else {
-                // Remove selected movie from favorites
-                if let index = favorites.firstIndex(where: { $0 == movie }) {
-                    favorites.remove(at: index)
-                    if selectedCategory.name == .favorites {
-                        showDetails(for: nil)
-                        scrollTo(
-                            target: index == favorites.endIndex
-                            ? favorites.last
-                            : favorites[index],
-                            delay: animationDuration * 0.51
-                        )
+        if isFavorite {
+            // Add the selected movie to favorites
+            favorites.insert(movie, at: .zero)
+        } else {
+            // Remove selected movie from favorites
+            if let index = favorites.firstIndex(where: { $0 == movie }) {
+                favorites.remove(at: index)
+                
+                // If current category is favorites, exit the movie detail view
+                if selectedCategory.name == .favorites {
+                    showDetails(for: nil)
+                    
+                    // Update poster to next movie, if the list is not empty
+                    if let nextMovie = index == favorites.endIndex ? favorites.last : favorites[index] {
+                        posterURL = nextMovie.posterURL
                     }
                 }
             }
+        }
         
         // Update persisting favorites data in background
         Task(priority: .background) {
@@ -82,6 +84,11 @@ extension MoviesView {
     func fetchFavorites() async {
         do {
             favorites = try await Movies.favorites
+            
+            // Update poster if current category is favorites
+            if selectedCategory.name == .favorites {
+                posterURL = favorites.first?.posterURL
+            }
         } catch {
             print("Couldn't fetch favorites: \(error.localizedDescription)")
         }

@@ -25,12 +25,11 @@ import SwiftUI
 struct CategoriesView: View {
     private let transition: AnyTransition = .move(edge: .bottom).combined(with: .opacity)
     
-    @Environment(\.animationDuration) var animationDuration
+    @Environment(\.animationDuration) private var animationDuration
+    @Binding var selection: Category
     let movie: Movie?
     let availableHeight: Double
     let categories: [Category]
-    let selection: Category
-    let onTap: (Category) -> Void
 
     var body: some View {
         VStack {
@@ -64,8 +63,8 @@ struct CategoriesView: View {
                 )
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(selection == category ? .logoSecondary : .secondary)
                 .contentTransition(.symbolEffect)
+                .foregroundStyle(selection == category ? .logoSecondary : .secondary)
                 .frame(width: 35)
                 .frame(maxWidth: .infinity)
                 // Add this category's bounds to CategoryPreferenceKey
@@ -73,7 +72,7 @@ struct CategoriesView: View {
                     [CategoryPreference(category: category, anchor: anchor)]
                 }
                 .onTapGesture {
-                    onTap(category)
+                    selection = category
                 }
             }
         }
@@ -112,15 +111,11 @@ struct CategoriesView: View {
                     Spacer()
                     
                     CategoriesView(
+                        selection: $selectedCategory.animation(),
                         movie: selectedMovie,
                         availableHeight: proxy.size.height,
-                        categories: categories,
-                        selection: selectedCategory
-                    ) { category in
-                        withAnimation(.bouncy(duration: animationDuration)) {
-                            selectedCategory = category
-                        }
-                    }
+                        categories: categories
+                    )
                 }
             }
             .ignoresSafeArea(edges: .bottom)

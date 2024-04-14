@@ -11,7 +11,7 @@ import SwiftUI
 extension MoviesView {
     @ViewBuilder
     func buildPoster(of size: CGSize) -> some View {
-        NetworkImage(url: scrolledTo?.posterURL) { image in
+        NetworkImage(url: posterURL) { image in
             image
                 .resizable()
                 .scaledToFit()
@@ -32,8 +32,18 @@ extension MoviesView {
                 endPoint: .top
             )
         }
-        .id(scrolledTo)
-        .animation(.bouncy(duration: animationDuration), value: scrolledTo)
+        .id(posterURL?.absoluteString)
+        .animation(.bouncy(duration: animationDuration), value: posterURL)
+        .onChange(of: selectedCategory) { _, newValue in
+            if !movies.isEmpty {
+                posterURL = movies.first?.posterURL
+            }
+        }
+        .onChange(of: scrolledTo) { _, newValue in
+            if let newValue {
+                posterURL = newValue.posterURL
+            }
+        }
     }
     
     var posterPlaceholder: some View {
@@ -49,7 +59,7 @@ extension MoviesView {
     
     var titleView: some View {
         Text(title)
-            .font(.custom(Font.jostLight, size: 40))
+            .font(.jostLight(size: 40))
             .shadow(color: .black.opacity(0.5), radius: 5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .offset(x: 20, y: 75)

@@ -13,7 +13,7 @@ import SwiftUI
 /**
  A generic debouncer that works on bindings.
  */
-class Debouncer<T>: ObservableObject {
+final class Debouncer<T>: ObservableObject {
     @Published var input: T
     @Published var output: T
     

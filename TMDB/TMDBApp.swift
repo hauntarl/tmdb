@@ -25,7 +25,7 @@ struct TMDBApp: App {
     var body: some Scene {
         WindowGroup {
             LaunchView()
-                .animationDuration(1)
+                .animationDuration(0.75)
                 .preferredColorScheme(.dark)
         }
     }

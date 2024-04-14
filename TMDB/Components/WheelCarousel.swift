@@ -98,10 +98,6 @@ struct WheelCarousel<Item: Equatable & Hashable, Content: View>: View {
         private let movies = Movies.sample.results
         @State private var scrolledTo: Movie?
         
-        init() {
-            self._scrolledTo = .init(initialValue: movies.first)
-        }
-        
         var body: some View {
             VStack {
                 WheelCarousel(
