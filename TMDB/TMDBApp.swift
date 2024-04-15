@@ -12,8 +12,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
-        FontLoader.load(name: "Jost-Light", withExtension: "ttf")
-        FontLoader.load(name: "Jost-Medium", withExtension: "ttf")
+        Font.load(name: "Jost-Light", withExtension: "ttf")
+        Font.load(name: "Jost-Medium", withExtension: "ttf")
         return true
     }
 }

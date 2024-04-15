@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		FC001D302BC6DEB400F2E5E5 /* Jost-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */; };
 		FC001D312BC6DEB400F2E5E5 /* Jost-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */; };
-		FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */; };
+		FC001D332BC6E06B00F2E5E5 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D322BC6E06B00F2E5E5 /* Font+Extension.swift */; };
 		FC001D352BC70B3600F2E5E5 /* MoviesView+Poster.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC001D342BC70B3600F2E5E5 /* MoviesView+Poster.swift */; };
 		FC3A53302BC7393400594517 /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A532F2BC7393400594517 /* FavoriteButton.swift */; };
 		FC3A53322BC752C500594517 /* MoviesView+Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3A53312BC752C500594517 /* MoviesView+Categories.swift */; };
@@ -42,7 +42,7 @@
 		FC001D2D2BC6DDF800F2E5E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Medium.ttf"; sourceTree = "<group>"; };
 		FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Jost-Light.ttf"; sourceTree = "<group>"; };
-		FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontLoader.swift; sourceTree = "<group>"; };
+		FC001D322BC6E06B00F2E5E5 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		FC001D342BC70B3600F2E5E5 /* MoviesView+Poster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Poster.swift"; sourceTree = "<group>"; };
 		FC3A532F2BC7393400594517 /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		FC3A53312BC752C500594517 /* MoviesView+Categories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MoviesView+Categories.swift"; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		FC001D2A2BC6DD0E00F2E5E5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				FC001D322BC6E06B00F2E5E5 /* FontLoader.swift */,
+				FC001D322BC6E06B00F2E5E5 /* Font+Extension.swift */,
 				FC001D2F2BC6DEB400F2E5E5 /* Jost-Light.ttf */,
 				FC001D2E2BC6DEB400F2E5E5 /* Jost-Medium.ttf */,
 			);
@@ -273,7 +273,7 @@
 				FCE45B392BC62BD4003D6461 /* WheelCarousel.swift in Sources */,
 				FC92EB802BC462CB00B90E16 /* NetworkService.swift in Sources */,
 				FCF879892BC9833600445933 /* Debouncer.swift in Sources */,
-				FC001D332BC6E06B00F2E5E5 /* FontLoader.swift in Sources */,
+				FC001D332BC6E06B00F2E5E5 /* Font+Extension.swift in Sources */,
 				FC92EB7E2BC456B800B90E16 /* Networking.swift in Sources */,
 				FC92EB822BC469C700B90E16 /* Samples.swift in Sources */,
 				FC92EB8C2BC5650A00B90E16 /* CategoriesView.swift in Sources */,

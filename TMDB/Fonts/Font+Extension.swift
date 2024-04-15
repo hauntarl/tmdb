@@ -10,10 +10,10 @@ import CoreText
 import CoreGraphics
 import SwiftUI
 
-final class FontLoader {
+extension Font {
     static func load(name: String, withExtension: String) {
         guard
-            let url = Bundle(for: FontLoader.self).url(forResource: name, withExtension: withExtension),
+            let url = Bundle.main.url(forResource: name, withExtension: withExtension),
             let dataProvider = CGDataProvider(url: url as CFURL),
             let font = CGFont(dataProvider)
         else {
@@ -26,9 +26,7 @@ final class FontLoader {
             print("Error loading Font: \(name).\(withExtension).")
         }
     }
-}
-
-extension Font {
+    
     static func jostLight(size: CGFloat) -> Self {
         .custom("Jost-Light", size: size)
     }
