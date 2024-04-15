@@ -6,6 +6,8 @@ Design inspired by [dribbble](https://dribbble.com/shots/17158465-Movie-App).
 
 <img src="https://github.com/hauntarl/hauntarl/blob/master/tmdb/tmdb-1.gif" width="200"> <img src="https://github.com/hauntarl/hauntarl/blob/master/tmdb/tmdb-2.gif" width="200">
 
+> **Note:** Video walkthrough available on [loom.com](https://www.loom.com/share/662d6ab9d8374293b909929ed8c061ad?sid=7d286a37-a18d-4d11-ad59-1220a7a3fb26)
+
 ## About
 
 - Developed by: [Sameer Mungole](https://www.linkedin.com/in/sameer-mungole/)
