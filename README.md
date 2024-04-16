@@ -56,6 +56,7 @@ Once you set up your *API key* you can build and run the application to test it.
 
 ## Next Steps
 
+- Preserve scroll location when switching between categories
 - Show movies from other categories like [popular](https://developer.themoviedb.org/reference/movie-popular-list), [top-rated](https://developer.themoviedb.org/reference/movie-top-rated-list), and [upcoming](https://developer.themoviedb.org/reference/movie-upcoming-list)
 - Add pagination support to load more movies once the user reaches the end of the carousel
 - Add support for scrolling through carousel items using previous and next buttons
